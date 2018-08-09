@@ -222,7 +222,7 @@
 
       // second graph
       var graph2 = new AmCharts.AmGraph();
-      graph2.valueAxis = valueAxis2; // we have to indicate which value axis should be used
+      graph2.valueAxis = valueAxis1; // we have to indicate which value axis should be used
       graph2.title = "Forecast data";
       graph2.valueField = "forecast";
       graph2.bullet = "square";
