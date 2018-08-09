@@ -144,6 +144,7 @@
       chart = new AmCharts.AmSerialChart();
 
       chart.dataProvider = chartData;
+      chart.hideCredits = true;
       chart.categoryField = "date";
 
       // listen for "dataUpdated" event (fired when chart is inited) and call zoomChart method when it happens

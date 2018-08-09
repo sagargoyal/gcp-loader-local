@@ -145,6 +145,7 @@
 
       chart.dataProvider = chartData;
       chart.categoryField = "date";
+      chart.hideCredits = true;
 
       // listen for "dataUpdated" event (fired when chart is inited) and call zoomChart method when it happens
       chart.addListener("dataUpdated", zoomChart);
@@ -312,5 +313,10 @@
     }
     return true;
   }
-
+$(window).on('load', function() {
+  setTimeout(function() {
+    // $('svg image').hide();
+    // $('svg image').next('rect').hide();
+  }, 500);
+})
 })(jQuery)
