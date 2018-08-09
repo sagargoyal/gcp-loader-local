@@ -3,13 +3,13 @@
 
 
   // CPU ustilization chart
-  var cpuChart = createChart(_el('cpu-chart-container'), '/data/CPU_response.json');
+  var cpuChart = createChart(_el('cpu-chart-container'), './data/CPU_response.json');
 
   // RAM Util chart
-  var ramChart = createChart(_el('ram-chart-container'), '/data/RAM_response.json');
+  var ramChart = createChart(_el('ram-chart-container'), './data/RAM_response.json');
 
   // Network load chart
-  var networkChart = createChart(_el('network-chart-container'), '/data/Network_response.json');
+  var networkChart = createChart(_el('network-chart-container'), './data/Network_response.json');
 
   // load CPU chart data
   loadData('/data/CPU_response.json', 'cpu', cpuChart);
@@ -240,6 +240,7 @@
       // SCROLLBAR
       var chartScrollbar = new AmCharts.ChartScrollbar();
       // chartScrollbar.dragIconWidth = 55;
+      chartScrollbar.mouseWheelZoomEnabled = false;
       chart.addChartScrollbar(chartScrollbar);
 
       // LEGEND
@@ -267,8 +268,8 @@
           var history = data.metrics_history;
           var forecast = data.forecast_result["0"].metrics_forecast;
 
-          // console.log(history, forecast)
-          for (var i = 0; i < 598; i++) {
+          console.log(history, forecast)
+          for (var i = 0; i < 400; i++) {
             // we create date objects here. In your data, you can have date strings
             // and then set format of your dates using chart.dataDateFormat property,
             // however when possible, use date objects, as this will speed up chart rendering.
@@ -276,12 +277,14 @@
             newDate.setDate(newDate.getDate() + i);
 
             chartData.push({
-              date: new Date(history[i].timestamp),
-              history: history[i].value,
+              date: new Date(forecast[i].timestamp),
+              history: history[i] ? history[i].value : '',
               forecast: forecast[i].value,
             });
 
             $('.amcharts-chart-div a').hide();
+            $('svg image').hide();
+            $('svg image').next('rect').hide();
           }
 
           chart.dataProvider = chartData;
@@ -304,7 +307,7 @@
     // this method is called when chart is first inited as we listen for "dataUpdated" event
     function zoomChart() {
       // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
-      chart.zoomToIndexes(10, 20);
+      chart.zoomToIndexes(10, 30);
     }
     return chart;
   }

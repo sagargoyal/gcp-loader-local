@@ -3,13 +3,13 @@
 
 
   // CPU ustilization chart
-  var cpuChart = createChart(_el('android-chart-container'), '/data/Android_requests.json');
+  var cpuChart = createChart(_el('android-chart-container'), './data/Network_load.json');
 
   // RAM Util chart
-  var ramChart = createChart(_el('ios-chart-container'), '/data/iOS_requests.json');
+  var ramChart = createChart(_el('ios-chart-container'), './data/PC_load.json');
 
   // Network load chart
-  var networkChart = createChart(_el('network-chart-container'), '/data/Network_response.json');
+  // var networkChart = createChart(_el('network-chart-container'), './data/Network_response.json');
 
   // load CPU chart data
   // loadData('/data/CPU_response.json', 'cpu', cpuChart);
@@ -258,7 +258,7 @@
           var forecast = data.forecast_result["0"].metrics_forecast;
 
           // console.log(history, forecast)
-          for (var i = 0; i < 598; i++) {
+          for (var i = 0; i < data.metrics_history.length; i++) {
             // we create date objects here. In your data, you can have date strings
             // and then set format of your dates using chart.dataDateFormat property,
             // however when possible, use date objects, as this will speed up chart rendering.
