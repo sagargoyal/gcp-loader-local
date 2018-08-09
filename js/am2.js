@@ -271,6 +271,8 @@
             });
 
             $('.amcharts-chart-div a').hide();
+            $('svg image').hide();
+            $('svg image').next('rect').hide();
           }
 
           chart.dataProvider = chartData;
