@@ -3,10 +3,11 @@
 
 
   // CPU ustilization chart
-  var cpuChart = createChart(_el('android-chart-container'), './data/Network_load.json');
+  var cpuChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
 
   // RAM Util chart
-  var ramChart = createChart(_el('ios-chart-container'), './data/PC_load.json');
+  var ramChart = createChart(_el('ios-chart-container'), './data/PC_load_n.json');
+  var pcloadChart = createChart(_el('pcload-chart-container'), './data/CPU_n.json');
 
   // Network load chart
   // var networkChart = createChart(_el('network-chart-container'), './data/Network_response.json');
@@ -64,6 +65,36 @@
   //   loopDelay = 2000 - $this.val();
   //   console.log($this.val(), loopDelay)
   // })
+
+  $('.js-chart-type').on('change', function() {
+    var url = $(this).val();
+    // console.log(type);
+
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+        var history = data.metrics_history;
+        var newChartData = [];
+        // console.log(history, forecast)
+        for (var i = 0; i < data.metrics_history.length; i++) {
+          // we create date objects here. In your data, you can have date strings
+          // and then set format of your dates using chart.dataDateFormat property,
+          // however when possible, use date objects, as this will speed up chart rendering.
+
+          newChartData.push({
+            date: history[i].timestamp,
+            history: history[i].value,
+          });
+        }
+
+        var allCharts = AmCharts.charts; 
+        allCharts[2].dataProvider = newChartData;
+        allCharts[2].validateData();
+      }
+    })
+  });
 
   function handleData() {
     theLoop = setTimeout(function () {
@@ -160,55 +191,12 @@
       categoryAxis.minorGridEnabled = true;
       categoryAxis.axisColor = "#DADADA";
       categoryAxis.twoLineMode = true;
-      // categoryAxis.dateFormats = [
-
-      //   {
-      //     period: 'fff',
-      //     format: 'JJ:NN:SS'
-      //   },
-      //   {
-      //     period: 'ss',
-      //     format: 'JJ:NN:SS'
-      //   },
-      //   {
-      //     period: 'mm',
-      //     format: 'JJ:NN'
-      //   },
-      //   {
-      //     period: 'hh',
-      //     format: 'JJ:NN'
-      //   },
-      //   {
-      //     period: 'DD',
-      //     format: 'DD'
-      //   },
-      //   {
-      //     period: 'WW',
-      //     format: 'DD'
-      //   },
-      //   {
-      //     period: 'MM',
-      //     format: 'MMM'
-      //   },
-      //   {
-      //     period: 'YYYY',
-      //     format: 'YYYY'
-      //   }
-      // ];
 
       // first value axis (on the left)
       var valueAxis1 = new AmCharts.ValueAxis();
       valueAxis1.axisColor = "#FF6600";
       valueAxis1.axisThickness = 2;
       chart.addValueAxis(valueAxis1);
-
-      // second value axis (on the right)
-      var valueAxis2 = new AmCharts.ValueAxis();
-      valueAxis2.position = "right"; // this line makes the axis to appear on the right
-      valueAxis2.axisColor = "#FCD202";
-      valueAxis2.gridAlpha = 0;
-      valueAxis2.axisThickness = 2;
-      chart.addValueAxis(valueAxis2);
 
       // GRAPHS
       // first graph
@@ -239,6 +227,8 @@
       legend.useGraphSettings = true;
       chart.addLegend(legend);
 
+      console.log(chart);
+      // return chart;
       // WRITE
       chart.write(chartEl);
     });
@@ -298,9 +288,9 @@
       // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
       chart.zoomToIndexes(10, 20);
     }
+    console.log(chart);
     return chart;
   }
-
 
 
   function _el(id) {

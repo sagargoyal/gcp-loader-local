@@ -95,6 +95,21 @@
           <!-- <div class="network-load mb-3 chart-container" id="network-chart-container">
             <h2 class="h6 mb-2">Network load</h2>
           </div> -->
+
+          <div class="clearfix">
+            <div class="float-left">
+              <h2 class="h6 mb-2">PC load</h2>
+            </div>
+            <div class="float-right">
+              <select class="custom-select js-chart-type">
+                <option value="./data/CPU_n.json" selected>CPU</option>
+                <option value="./data/RAM_n.json">RAM</option>
+                <option value="./data/Network_n.json">NETWORK</option>
+              </select>
+            </div>
+          </div>
+          <div class="iosload mb-5 chart-container" id="pcload-chart-container">
+          </div>
         </div>
       </div>
     </div>
