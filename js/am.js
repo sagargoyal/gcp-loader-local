@@ -1,48 +1,4 @@
 (function($) {
-    $("#recommendation").click(function() {
-
-        // This the Apply Recommendation button's clickListener
-        // TODO, save data of API call response into var data & then the following code will make the correct instancetype & make AJAX call accordingly.
-
-
-        if (value) {
-            $.ajax({
-                url: 'https://load-predictor.herokuapp.com/modify',
-                data: JSON.stringify({ 'instanceType': value }),
-                type: 'POST',
-                contentType: "application/json",
-                success: function(data) {
-                    alert(data);
-                },
-                error: function(err) {
-                    console.error("FETCH INSTANCE ERR: ", err);
-                }
-            })
-        }
-    });
-
-    $("#reset").click(function() {
-
-        // This the Apply Recommendation button's clickListener
-        // TODO, save data of API call response into var data & then the following code will make the correct instancetype & make AJAX call accordingly.
-
-
-        // if (value) {
-        $.ajax({
-                url: 'https://load-predictor.herokuapp.com/modify',
-                data: JSON.stringify({ 'instanceType': 't2.small' }),
-                type: 'POST',
-                contentType: "application/json",
-                success: function(data) {
-                    alert(data);
-                },
-                error: function(err) {
-                    console.error("FETCH INSTANCE ERR: ", err);
-                }
-            })
-            // }
-    });
-
 
     // CPU ustilization chart
     var cpuChart = createChart(_el('cpu-chart-container'), './data/CPU_response.json');

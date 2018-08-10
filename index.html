@@ -33,8 +33,8 @@
 
         <!-- <div class="col-4">Present Server Config: 1 Core 2GB RAM</div>
             <div id="recommended-config" class="col-4">Recommended Config: </div> -->
-        <button id="recommendation" type="button" class="btn btn-secondary my-2 navbar-btn">Apply Recommendation</button> &nbsp;
-        <button type="button" class="btn btn-secondary btn-outline-dark navbar-btn" id="reset">Reset</button>
+        <!-- <button id="recommendation" type="button" class="btn btn-secondary my-2 navbar-btn">Apply Recommendation</button> &nbsp;
+        <button type="button" class="btn btn-secondary btn-outline-dark navbar-btn" id="reset">Reset</button> -->
 
     </nav>
 
@@ -42,7 +42,38 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-
+                    <div>
+                        Android Load
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                            <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                            </span>
+                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        iOS Load
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                            <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                            </span>
+                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-9">
@@ -51,20 +82,39 @@
                         <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
 
                     </div>
-
                     <h2 class="h6 mb-2">CPU Utilization</h2>
                     <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
-
                         <canvas id="cpu-util-chart"></canvas>
                     </div>
+                    <div class="float-left"><span>Present Configuration : n1</span>&nbsp;|&nbsp;<span>Recommended Configuration : n2</span></div>
+                    <div class="float-right">
+                        <button id="recommendation" type="button" class="btn btn-secondary">Apply Recommendation</button> &nbsp;
+                        <button type="button" class="btn btn-secondary btn-outline-dark" id="reset">Reset</button>
+                    </div>
+                    <br><br>
+                    <hr><br>
                     <h2 class="h6 mb-2">RAM Utilization</h2>
                     <div class="ram-utilization mb-5 chart-container" id="ram-chart-container">
                         <!-- <canvas id="ram-util-chart"></canvas> -->
                     </div>
+                    <div class="float-left"><span>Present Configuration : n1</span>&nbsp;|&nbsp;<span>Recommended Configuration : n2</span></div>
+                    <div class="float-right">
+                        <button id="recommendation" type="button" class="btn btn-secondary my-2">Apply Recommendation</button> &nbsp;
+                        <button type="button" class="btn btn-secondary btn-outline-dark" id="reset">Reset</button>
+                    </div>
+                    <br><br>
+                    <hr><br>
                     <h2 class="h6 mb-2">Network load</h2>
                     <div class="network-load mb-3 chart-container" id="network-chart-container">
                         <!-- <canvas id="network-load-chart"></canvas> -->
                     </div>
+                    <div class="float-left"><span>Present Configuration : n1</span>&nbsp;|&nbsp;<span>Recommended Configuration : n2</span> </div>
+                    <div class="float-right">
+                        <button id="recommendation" type="button" class="btn btn-secondary my-2">Apply Recommendation</button> &nbsp;
+                        <button type="button" class="btn btn-secondary btn-outline-dark" id="reset">Reset</button>
+                    </div>
+                    <br><br>
+                    <hr><br>
                 </div>
             </div>
         </div>
