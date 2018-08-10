@@ -247,6 +247,7 @@
             var legend = new AmCharts.AmLegend();
             legend.marginLeft = 110;
             legend.useGraphSettings = true;
+            legend.valueText = '';
             chart.addLegend(legend);
 
             // WRITE
