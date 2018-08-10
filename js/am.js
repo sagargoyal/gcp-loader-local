@@ -268,14 +268,14 @@
       chart.addGraph(graph2);
 
       // third graph
-      var graph3 = new AmCharts.AmGraph();
-      graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-      graph3.title = "Recommended data";
-      graph3.valueField = "recommended";
-      graph3.bullet = "square";
-      graph3.hideBulletsCount = 24;
-      graph3.bulletBorderThickness = 1;
-      chart.addGraph(graph3);
+    //   var graph3 = new AmCharts.AmGraph();
+    //   graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
+    //   graph3.title = "Recommended data";
+    //   graph3.valueField = "recommended";
+    //   graph3.bullet = "square";
+    //   graph3.hideBulletsCount = 24;
+    //   graph3.bulletBorderThickness = 1;
+    //   chart.addGraph(graph3);
 
       // CURSOR
       var chartCursor = new AmCharts.ChartCursor();
@@ -328,7 +328,7 @@
               date: new Date(forecast[i].timestamp),
               history: history[i] ? history[i].value : '',
               forecast: forecast[i].value,
-                recommended: forecast[i].value
+                // recommended: forecast[i].value
             });
 
             
