@@ -7,13 +7,24 @@
 	var cRAMPostion = 0;
 	var cNetworkPostion = 0;	
 	var interval;
-	
+	var playing = true;
 	moveCharts();
 	
-	
-
+	$( "#play" ).click(function() {
+	 playing = true;
+	});
+	$( "#pause" ).click(function() {
+		playing = false;
+	});
 	function moveCharts(){
-		interval = setInterval( function() {	  
+		interval = setInterval( function() {
+			
+		  if(playing){
+			  if($( "#play" ).hasClass('btn-success'))
+				$( "#play" ).removeClass('btn-success');				
+			  
+			  if(!$( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).addClass('btn-danger');
 			if(cCPUPostion == cpuChart.dataProvider.length - 21)
 				cCPUPostion = 0;
 			else
@@ -34,7 +45,13 @@
 				cNetworkPostion++;
 			
 			networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
-			
+		  }else{
+			  if(!$( "#play" ).hasClass('btn-success'))
+				$( "#play" ).addClass('btn-success');				
+			  
+			  if($( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).removeClass('btn-danger');
+		  }
 		}, 10 );
 	}
 

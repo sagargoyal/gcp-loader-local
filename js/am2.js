@@ -1,7 +1,62 @@
 (function ($) {
 
+	var cCPUPostion = 0;
+	var cRAMPostion = 0;
+	var cPCloadPostion = 0;	
+	var interval;
+	var playing = true;
 
+	moveCharts();
+	
+	$( "#play" ).click(function() {
+	 playing = true;
+	});
+	$( "#pause" ).click(function() {
+		playing = false;
+	});
 
+	function moveCharts(){
+		interval = setInterval( function() {
+			if(playing){
+			  if($( "#play" ).hasClass('btn-success'))
+				$( "#play" ).removeClass('btn-success');				
+			  
+			  if(!$( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).addClass('btn-danger');
+			
+				if(cCPUPostion == cpuChart.dataProvider.length - 21)
+					cCPUPostion = 0;
+				else
+					cCPUPostion++;
+				
+				cpuChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
+				
+				if(cRAMPostion == ramChart.dataProvider.length - 21)
+					cRAMPostion = 0;
+				else
+					cRAMPostion++;
+				
+				ramChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
+				
+				if(cPCloadPostion == pcloadChart.dataProvider.length - 21)
+					cPCloadPostion = 0;
+				else
+					cPCloadPostion++;
+				
+				pcloadChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
+			}else{
+			  if(!$( "#play" ).hasClass('btn-success'))
+				$( "#play" ).addClass('btn-success');				
+			  
+			  if($( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).removeClass('btn-danger');
+		  }
+		}, 10 );
+	}
+
+	
+		    
+	
   // CPU ustilization chart
   var cpuChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
 
@@ -268,6 +323,18 @@
 
           chart.dataProvider = chartData;
 
+		   if (url === './data/Network_load_n.json') {
+			   cpuChart = chart;
+			}
+
+			if (url === './data/PC_load_n.json') {
+			  ramChart = chart;
+			}
+
+			if (url ===  './data/CPU_n.json') {
+			  pcloadChart = chart;
+			}
+			
           console.log(chartData);
 
           chart.validateData();
