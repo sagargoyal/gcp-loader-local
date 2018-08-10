@@ -9,7 +9,86 @@
 	var interval;
 	
 	moveCharts();
-	
+
+  $('#computer-load').on('click', 'button', function() {
+    $this = $(this);
+
+    if ($this.hasClass('js-add')) {
+      console.log('add');
+      $(this).parent().parent().find('input').val(2);
+      $(this).parent().parent().find('.js-minus').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/CPU_boost_n.json');
+
+    } else if ($this.hasClass('js-minus')) {
+      console.log('minus');
+      $(this).parent().parent().find('input').val(1);
+      $(this).parent().parent().find('.js-add').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/CPU_n.json');
+    }
+
+  });
+
+  function loadNewData(url) {
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function(data) {
+
+        var newChartData = [];
+        var history = data.metrics_history;
+        var forecast = data.forecast_result["0"].metrics_forecast;
+        var recommended = data.forecast_result["0"].recommendation_forecast;
+
+        // console.log(data);
+        for (let i = 0; i < cpuData.forecast.length; i++) {
+          const smallData = cpuData.forecast[i];
+
+          if (new Date(smallData.timestamp) <= new Date(cpuChart.endDate)) {
+            newChartData.push({
+              date: new Date(smallData.timestamp),
+              forecast: smallData.value,
+              history: cpuData.history[i].value
+            });
+          } else {
+            newChartData.push({
+              date: new Date(forecast[i].timestamp),
+              history: history[i] ? history[i].value : '',
+              forecast: forecast[i].value,
+            });
+          }
+
+        }
+        cpuChart.dataProvider = newChartData;
+        cpuChart.validateData();
+        console.log(cpuChart.endDate)
+        
+      },
+      error: function(err) {
+        console.log(err)
+      }
+    })
+  }
+
+  $('#network-load').on('click', 'button', function () {
+    $this = $(this);
+
+    if ($this.hasClass('js-add')) {
+      console.log('add');
+      $(this).parent().parent().find('input').val(2);
+      $(this).parent().parent().find('.js-minus').removeAttr('disabled');
+      $(this).attr('disabled', true);
+
+    } else if ($this.hasClass('js-minus')) {
+      console.log('minus');
+      $(this).parent().parent().find('input').val(1);
+      $(this).parent().parent().find('.js-add').removeAttr('disabled');
+      $(this).attr('disabled', true);
+    }
+
+  });
 	
 
 	function moveCharts(){
@@ -35,7 +114,7 @@
 			
 			networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
 			
-		}, 10 );
+		}, 1000 );
 	}
 
   // CPU ustilization chart
@@ -196,41 +275,6 @@
       categoryAxis.minorGridEnabled = true;
       categoryAxis.axisColor = "#DADADA";
       categoryAxis.twoLineMode = true;
-      // categoryAxis.dateFormats = [
-
-      //   {
-      //     period: 'fff',
-      //     format: 'JJ:NN:SS'
-      //   },
-      //   {
-      //     period: 'ss',
-      //     format: 'JJ:NN:SS'
-      //   },
-      //   {
-      //     period: 'mm',
-      //     format: 'JJ:NN'
-      //   },
-      //   {
-      //     period: 'hh',
-      //     format: 'JJ:NN'
-      //   },
-      //   {
-      //     period: 'DD',
-      //     format: 'DD'
-      //   },
-      //   {
-      //     period: 'WW',
-      //     format: 'DD'
-      //   },
-      //   {
-      //     period: 'MM',
-      //     format: 'MMM'
-      //   },
-      //   {
-      //     period: 'YYYY',
-      //     format: 'YYYY'
-      //   }
-      // ];
 
       // first value axis (on the left)
       var valueAxis1 = new AmCharts.ValueAxis();
@@ -323,7 +367,6 @@
             // however when possible, use date objects, as this will speed up chart rendering.
             var newDate = new Date(firstDate);
             newDate.setDate(newDate.getDate() + i);
-            console.log(recommended[i])
             chartData.push({
               date: new Date(forecast[i].timestamp),
               history: history[i] ? history[i].value : '',
@@ -340,18 +383,23 @@
             
             chart.dataProvider = chartData;
             
-            console.log('chdata', chartData);
 	
 		     if (url === './data/CPU_n.json') {
-			   cpuChart = chart;
+         cpuChart = chart;
+           cpuData.history = history;
+           cpuData.forecast = forecast;
 			}
 
 			if (url === './data/RAM_n.json') {
-			  ramChart = chart;
+        ramChart = chart;
+        cpuData.history = history;
+        cpuData.forecast = forecast;
 			}
 
 			if (url ===  './data/Network_n.json') {
-			  networkChart = chart;
+        networkChart = chart;
+        cpuData.history = history;
+        cpuData.forecast = forecast;
 			}
         //   console.log(chartData);
 
@@ -361,9 +409,6 @@
 
         }
       });
-
-      var firstDate = new Date();
-      firstDate.setDate(firstDate.getDate() - 50);
 
       
     }
