@@ -42,9 +42,9 @@
     </nav>
 
     <section id="home" class="mt-2">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <div class="clearfix" id="computer-load">
                         <div class="w-50 float-left">Computer Load</div>
                         <div class="input-group mb-3 w-50 float-right">
@@ -82,33 +82,36 @@
                         </div>
                     </div>
 
-                    <table class="table table-bordered">
+                    <p class="mt-4">Events series</p>
+
+                    <table class="table table-responsive table-bordered" id="events" style="height: 300px; overflow-y: scroll;">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Events log</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="mt-4">Trigger series</p>
+                    
+                    <table class="table table-responsive table-bordered" id="triggers" style="height: 300px; overflow-y: scroll;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Trigger log</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
@@ -117,7 +120,7 @@
 
                 
 
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                     <div class="slider-container pb-3">
 
                         <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->

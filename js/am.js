@@ -108,6 +108,7 @@
           cpuDataUrl = url;
           cpuData.history = newHistoryData;
           cpuData.forecast = newForeCastData;
+          cpuData.recommended = recommended;
         }
 
         // if (url === './data/RAM_n.json') {
@@ -145,6 +146,7 @@
           networkData = [];
           networkData.history = newHistoryData;
           networkData.forecast = newForeCastData;
+          networkData.recommended = recommended;
           networkDataUrl = url;
         }
         chart.dataProvider = newChartData;
@@ -177,7 +179,19 @@
             // recommended: forecast[i].value
           });
         }
-
+        if (chart == cpuChart) {
+          cpuData.history = history;
+          cpuData.forecast = forecast;
+          cpuData.recommended = recommended;
+        }  else if (chart == ramChart) {
+          ramData.history = history;
+          ramData.forecast = forecast;
+          ramData.recommended = recommended;
+        } else {
+          ramData.history = history;
+          ramData.forecast = forecast;
+          ramData.recommended = recommended;
+        }
         chart.dataProvider = chartData;
         chart.validateData();
       },
@@ -187,8 +201,122 @@
     });
   }
 
+  function fetchEventsLog() {
+    // console.log(cpuChart);
+    var start = cpuChart.startDate;
+    var end = cpuChart.endDate;
+    // console.log(start, end);
+
+    var html = '';
+    var html2 = '';
+    for (let i = 0; i < 200; i++) {
+      
+      var recCPUData = cpuData.history[i];
+      var recRAMData = ramData.history[i];
+      var recNetworkData = networkData.history[i];
+
+      console.log(recCPUData.recomendation)
+
+      if (new Date(recCPUData.timestamp) >= start && new Date(recCPUData.timestamp) <= end ) {
+        // console.log(recCPUData.recomendation)
+        if (recCPUData.value < 50) {
+          // CPU outage
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp +'</td>';
+          html += '<td>CPU outage</td>';
+          html += '</tr>';
+
+          // CPU  deprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>CPU deprovision</td>';
+          html2 += '</tr>';
+        } else if (recCPUData.value > 75) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>CPU excess</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>CPU overprovision</td>';
+          html2 += '</tr>';
+        }
+
+        if (recRAMData.value < 50) {
+          // RAM outage
+          html += '<tr>';
+          html += '<td>' + recRAMData.timestamp + '</td>';
+          html += '<td>RAM outage</td>';
+          html += '</tr>';
+
+          // RAM deprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recRAMData.timestamp + '</td>';
+          html2 += '<td>RAM deprovision</td>';
+          html2 += '</tr>';
+        } else if (recRAMData.value > 75) {
+          // RAM excess
+          html += '<tr>';
+          html += '<td>' + recRAMData.timestamp + '</td>';
+          html += '<td>RAM excess</td>';
+          html += '</tr>';
+
+          // RAM overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recRAMData.timestamp + '</td>';
+          html2 += '<td>RAM overprovision</td>';
+          html2 += '</tr>';
+        }
+
+        if (recNetworkData.value < 50) {
+          // Network outage
+          html += '<tr>';
+          html += '<td>' + recNetworkData.timestamp + '</td>';
+          html += '<td>Network outage</td>';
+          html += '</tr>';
+
+          // Network deprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recNetworkData.timestamp + '</td>';
+          html2 += '<td>Network deprovision</td>';
+          html2 += '</tr>';
+        } else if (recNetworkData.value > 75) {
+          // Network excess
+          html += '<tr>';
+          html += '<td>' + recNetworkData.timestamp + '</td>';
+          html += '<td>Network excess</td>';
+          html += '</tr>';
+
+          // Network overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recNetworkData.timestamp + '</td>';
+          html2 += '<td>Network overprovision</td>';
+          html2 += '</tr>';
+        }
+      }
+      
+    }
+    $('#events').find('tbody').html(html);
+    $('#triggers').find('tbody').html(html2);
+
+    // loop through data
+    // >= startDate <= endDate
+    // if increase or decrease generate text
+    // render html
+  }
+
+  function fetchTriggersLog() {
+
+  }
+
   function moveCharts() {
     interval = setInterval(function () {
+
+      fetchEventsLog();
+      fetchTriggersLog();
 
       if (playing) {
         if ($("#play").hasClass('btn-success'))
@@ -229,7 +357,7 @@
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
       }
-    }, 100);
+    }, 900);
   }
 
   // CPU ustilization chart
@@ -241,118 +369,11 @@
   // Network load chart
   var networkChart = createChart(_el('network-chart-container'), './data/Network_n.json');
 
-  // load CPU chart data
-  // loadData('/data/CPU_n.json', 'cpu', cpuChart);
-  // loadData('/data/RAM_response.json', 'ram', ramChart);
-  // loadData('/data/Network_response.json', 'network', ramChart);
-
-  // function loadData(url, target, chart) {
-  //   $.ajax({
-  //     url: url,
-  //     dataType: 'json',
-  //     contentType: "application/json",
-  //     success: function (data) {
-  //       // console.log(data);
-
-  //       if (target === 'cpu') {
-  //         cpuData.history = data.metrics_history;
-  //         cpuData.forecast = data.forecast_result["0"].metrics_forecast;
-
-  //       }
-
-  //       if (target === 'ram') {
-  //         ramData.history = data.metrics_history;
-  //         ramData.forecast = data.forecast_result["0"].metrics_forecast;
-  //       }
-
-  //       if (target === 'network') {
-  //         networkData.history = data.metrics_history;
-  //         networkData.forecast = data.forecast_result["0"].metrics_forecast;
-  //       }
-
-  //       if (!isEmpty(cpuData) && !isEmpty(ramData) && !isEmpty(networkData)) {
-  //         // handleData();
-  //       }
-
-  //     },
-  //     error: function (err) {
-  //       console.log(err);
-  //     }
-  //   });
-  // }
-  // var loopDelay = 2000;
-
   var theLoop;
   var cpuData = {};
   var ramData = {};
   var networkData = {};
 
-
-  // function handleData() {
-  //   theLoop = setTimeout(function () {
-  //     // cpu data chart update
-  //     cpuChart.data.labels.push(cpuData.history[index].timestamp.replace('Z', ''));
-
-  //     if (cpuData.history[index]) {
-  //       cpuChart.data.datasets[0].data.push({
-  //         y: cpuData.history[index].value,
-  //         x: cpuData.history[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-
-  //     if (cpuData.forecast[index]) {
-  //       cpuChart.data.datasets[0].data.push({
-  //         y: cpuData.forecast[index].value,
-  //         x: cpuData.forecast[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-
-  //     //ram data chart update
-  //     ramChart.data.labels.push(ramData.history[index].timestamp.replace('Z', ''));
-  //     if (ramData.history[index]) {
-  //       ramChart.data.datasets[2].data.push({
-  //         y: ramData.history[index].value,
-  //         x: ramData.history[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-  //     if (ramData.forecast[index]) {
-  //       ramChart.data.datasets[2].data.push({
-  //         y: ramData.forecast[index].value,
-  //         x: ramData.forecast[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-
-  //     //network data chart update
-  //     networkChart.data.labels.push(networkData.history[index].timestamp.replace('Z', ''));
-  //     if (networkData.history[index]) {
-  //       networkChart.data.datasets[2].data.push({
-  //         y: networkData.history[index].value,
-  //         x: networkData.history[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-  //     if (networkData.forecast[index]) {
-  //       networkChart.data.datasets[2].data.push({
-  //         y: networkData.forecast[index].value,
-  //         x: networkData.forecast[index].timestamp.replace('Z', '')
-  //       });
-  //     }
-
-  //     if (cpuData.history[index] || cpuData.forecast[index]) {
-  //       cpuChart.update();
-  //     }
-
-  //     if (ramData.history[index] || ramData.forecast[index]) {
-  //       ramChart.update();
-  //     }
-
-  //     if (networkData.history[index] || networkData.forecast[index]) {
-  //       networkChart.update();
-  //     }
-
-  //     index++;
-  //     handleData();
-  //   }, loopDelay);
-  // }
   function createChart(chartEl, url) {
 
     var chart;
@@ -446,6 +467,7 @@
       var legend = new AmCharts.AmLegend();
       legend.marginLeft = 110;
       legend.useGraphSettings = true;
+      legend.valueText = '';
       chart.addLegend(legend);
 
       // WRITE
@@ -494,18 +516,21 @@
             cpuChart = chart;
             cpuData.history = history;
             cpuData.forecast = forecast;
+            cpuData.recommended = recommended;
           }
 
           if (url === './data/RAM_n.json') {
             ramChart = chart;
             ramData.history = history;
             ramData.forecast = forecast;
+            ramData.recommended = recommended;
           }
 
           if (url === './data/Network_n.json') {
             networkChart = chart;
             networkData.history = history;
             networkData.forecast = forecast;
+            networkData.recommended = recommended;
           }
           //   console.log(chartData);
 
