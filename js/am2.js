@@ -3,7 +3,9 @@
 	var cCPUPostion = 0;
 	var cRAMPostion = 0;
 	var cPCloadPostion = 0;	
-	var interval;
+  var interval;
+  var pcloadDataUrl = '';
+  var networkDataUrl = '';
 	var playing = true;
 
 	moveCharts();
@@ -13,7 +15,159 @@
 	});
 	$( "#pause" ).click(function() {
 		playing = false;
-	});
+  });
+  
+  $('#compute-load').on('click', 'button', function () {
+    $this = $(this);
+
+    if ($this.hasClass('js-add')) {
+      console.log('add');
+      $(this).parent().parent().find('input').val(2);
+      $(this).parent().parent().find('.js-minus').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/PC_load_boost_n.json', pcloadChart);
+
+    } else if ($this.hasClass('js-minus')) {
+      console.log('minus');
+      $(this).parent().parent().find('input').val(1);
+      $(this).parent().parent().find('.js-add').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/PC_load_n.json', pcloadChart);
+    }
+
+  });
+  $('#network-load').on('click', 'button', function () {
+    $this = $(this);
+
+    if ($this.hasClass('js-add')) {
+      console.log('add');
+      $(this).parent().parent().find('input').val(2);
+      $(this).parent().parent().find('.js-minus').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/Network_load_boost_n.json', networkChart);
+
+    } else if ($this.hasClass('js-minus')) {
+      console.log('minus');
+      $(this).parent().parent().find('input').val(1);
+      $(this).parent().parent().find('.js-add').removeAttr('disabled');
+      $(this).attr('disabled', true);
+      loadNewData('./data/Network_load_n.json', networkChart);
+    }
+
+  });
+  function updateChart(chart, url) {
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+
+        var history = data.metrics_history;
+        var forecast = data.forecast_result["0"].metrics_forecast;
+        var recommended = data.forecast_result["0"].recommendation_forecast;
+        var chartData = [];
+        for (var i = 0; i < 200; i++) {
+          chartData.push({
+            date: new Date(forecast[i].timestamp),
+            history: history[i] ? history[i].value : '',
+            forecast: forecast[i].value,
+            // recommended: forecast[i].value
+          });
+        }
+
+        chart.dataProvider = chartData;
+        chart.validateData();
+      },
+      error: function (err) {
+
+      }
+    });
+  }
+  function loadNewData(url, chart) {
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+
+        var newChartData = [];
+        var history = data.metrics_history;
+        var forecast = data.forecast_result["0"].metrics_forecast;
+        var recommended = data.forecast_result["0"].recommendation_forecast;
+
+        var newHistoryData = [];
+        var newForeCastData = [];
+
+        if (chart == pcloadChart) {
+
+          for (let i = 0; i < 200; i++) {
+            const smallData = pcloadData.forecast[i];
+
+            if (new Date(smallData.timestamp) <= new Date(pcloadChart.endDate)) {
+              newChartData.push({
+                date: new Date(smallData.timestamp),
+                forecast: smallData.value,
+                history: pcloadData.history[i].value
+              });
+              newHistoryData.push(pcloadData.history[i].value);
+              newForeCastData.push(smallData.value);
+            } else {
+              newChartData.push({
+                date: new Date(forecast[i].timestamp),
+                history: history[i] ? history[i].value : '',
+                forecast: forecast[i].value,
+              });
+
+              newHistoryData.push(history[i] ? history[i].value : '');
+              newForeCastData.push(forecast[i].value);
+            }
+          }
+
+          pcloadChart = [];
+          pcloadDataUrl = url;
+          pcloadChart.history = newHistoryData;
+          pcloadChart.forecast = newForeCastData;
+        }
+
+        if (chart == networkChart) {
+          console.log(networkData)
+          for (let i = 0; i < 200; i++) {
+            const smallData = networkData.forecast[i];
+
+            if (new Date(smallData.timestamp) <= new Date(networkChart.endDate)) {
+              newChartData.push({
+                date: new Date(smallData.timestamp),
+                forecast: smallData.value,
+                history: networkData.history[i].value
+              });
+              newHistoryData.push(networkData.history[i].value);
+              newForeCastData.push(smallData.value);
+            } else {
+              newChartData.push({
+                date: new Date(forecast[i].timestamp),
+                history: history[i] ? history[i].value : '',
+                forecast: forecast[i].value,
+              });
+
+              newHistoryData.push(history[i] ? history[i].value : '');
+              newForeCastData.push(forecast[i].value);
+            }
+          }
+          networkData = [];
+          networkData.history = newHistoryData;
+          networkData.forecast = newForeCastData;
+          networkDataUrl = url;
+        }
+        chart.dataProvider = newChartData;
+        chart.validateData();
+
+
+      },
+      error: function (err) {
+        console.log(err)
+      }
+    })
+  }
 
 	function moveCharts(){
 		interval = setInterval( function() {
@@ -24,26 +178,33 @@
 			  if(!$( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).addClass('btn-danger');
 			
-				if(cCPUPostion == cpuChart.dataProvider.length - 21)
+				if(cCPUPostion == networkChart.dataProvider.length - 21) {
 					cCPUPostion = 0;
+          updateChart(networkChart, networkDataUrl);
+        }
 				else
 					cCPUPostion++;
 				
-				cpuChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
+				networkChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
 				
-				if(cRAMPostion == ramChart.dataProvider.length - 21)
+				if(cRAMPostion == pcloadChart.dataProvider.length - 21) {
 					cRAMPostion = 0;
+
+        }
 				else
 					cRAMPostion++;
 				
-				ramChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
+				pcloadChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
 				
-				if(cPCloadPostion == pcloadChart.dataProvider.length - 21)
-					cPCloadPostion = 0;
+				if(cPCloadPostion == cpuChart.dataProvider.length - 21) {
+          cPCloadPostion = 0;
+          updateChart(pcloadChart, pcloadDataUrl);
+
+        }
 				else
 					cPCloadPostion++;
 				
-				pcloadChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
+				cpuChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
 			}else{
 			  if(!$( "#play" ).hasClass('btn-success'))
 				$( "#play" ).addClass('btn-success');				
@@ -51,67 +212,28 @@
 			  if($( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).removeClass('btn-danger');
 		  }
-		}, 10 );
+		}, 900 );
 	}
 
 	
 		    
 	
   // CPU ustilization chart
-  var cpuChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
+  var networkChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
 
   // RAM Util chart
-  var ramChart = createChart(_el('ios-chart-container'), './data/PC_load_n.json');
-  var pcloadChart = createChart(_el('pcload-chart-container'), './data/CPU_n.json');
+  var pcloadChart = createChart(_el('ios-chart-container'), './data/PC_load_n.json');
+  var cpuChart = createChart(_el('pcload-chart-container'), './data/CPU_n.json');
 
   // Network load chart
   // var networkChart = createChart(_el('network-chart-container'), './data/Network_response.json');
 
-  // load CPU chart data
-  // loadData('/data/CPU_response.json', 'cpu', cpuChart);
-  // loadData('/data/RAM_response.json', 'ram', ramChart);
-  // loadData('/data/Network_response.json', 'network', ramChart);
-
-  function loadData(url, target, chart) {
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      contentType: "application/json",
-      success: function (data) {
-        // console.log(data);
-
-        if (target === 'cpu') {
-          cpuData.history = data.metrics_history;
-          cpuData.forecast = data.forecast_result["0"].metrics_forecast;
-
-        }
-
-        if (target === 'ram') {
-          ramData.history = data.metrics_history;
-          ramData.forecast = data.forecast_result["0"].metrics_forecast;
-        }
-
-        if (target === 'network') {
-          networkData.history = data.metrics_history;
-          networkData.forecast = data.forecast_result["0"].metrics_forecast;
-        }
-
-        if (!isEmpty(cpuData) && !isEmpty(ramData) && !isEmpty(networkData)) {
-          // handleData();
-        }
-
-      },
-      error: function (err) {
-        console.log(err);
-      }
-    });
-  }
   var loopDelay = 2000;
 
   var theLoop;
   var index = 0;
   var cpuData = {};
-  var ramData = {};
+  var pcloadData = {};
   var networkData = {};
 
   // $('#timeline-slider').on('change', function () {
@@ -154,34 +276,34 @@
   function handleData() {
     theLoop = setTimeout(function () {
       // cpu data chart update
-      cpuChart.data.labels.push(cpuData.history[index].timestamp.replace('Z', ''));
+      networkChart.data.labels.push(cpuData.history[index].timestamp.replace('Z', ''));
 
       if (cpuData.history[index]) {
-        cpuChart.data.datasets[0].data.push({
+        networkChart.data.datasets[0].data.push({
           y: cpuData.history[index].value,
           x: cpuData.history[index].timestamp.replace('Z', '')
         });
       }
 
       if (cpuData.forecast[index]) {
-        cpuChart.data.datasets[0].data.push({
+        networkChart.data.datasets[0].data.push({
           y: cpuData.forecast[index].value,
           x: cpuData.forecast[index].timestamp.replace('Z', '')
         });
       }
 
       //ram data chart update
-      ramChart.data.labels.push(ramData.history[index].timestamp.replace('Z', ''));
-      if (ramData.history[index]) {
-        ramChart.data.datasets[2].data.push({
-          y: ramData.history[index].value,
-          x: ramData.history[index].timestamp.replace('Z', '')
+      pcloadChart.data.labels.push(pcloadData.history[index].timestamp.replace('Z', ''));
+      if (pcloadData.history[index]) {
+        pcloadChart.data.datasets[2].data.push({
+          y: pcloadData.history[index].value,
+          x: pcloadData.history[index].timestamp.replace('Z', '')
         });
       }
-      if (ramData.forecast[index]) {
-        ramChart.data.datasets[2].data.push({
-          y: ramData.forecast[index].value,
-          x: ramData.forecast[index].timestamp.replace('Z', '')
+      if (pcloadData.forecast[index]) {
+        pcloadChart.data.datasets[2].data.push({
+          y: pcloadData.forecast[index].value,
+          x: pcloadData.forecast[index].timestamp.replace('Z', '')
         });
       }
 
@@ -201,11 +323,11 @@
       }
 
       if (cpuData.history[index] || cpuData.forecast[index]) {
-        cpuChart.update();
+        networkChart.update();
       }
 
-      if (ramData.history[index] || ramData.forecast[index]) {
-        ramChart.update();
+      if (pcloadData.history[index] || pcloadData.forecast[index]) {
+        pcloadChart.update();
       }
 
       if (networkData.history[index] || networkData.forecast[index]) {
@@ -324,18 +446,27 @@
           chart.dataProvider = chartData;
 
 		   if (url === './data/Network_load_n.json') {
-			   cpuChart = chart;
+         networkChart = chart;
+         networkData.history = history;
+         networkData.forecast = forecast;
+        
 			}
 
 			if (url === './data/PC_load_n.json') {
-			  ramChart = chart;
+        pcloadChart = chart;
+        pcloadData.history = history;
+        pcloadData.forecast = forecast;
 			}
 
 			if (url ===  './data/CPU_n.json') {
-			  pcloadChart = chart;
-			}
+        cpuChart = chart;
+        cpuData.history = history;
+        cpuData.forecast = forecast;
+      }
+      
+      console.log(cpuData);
 			
-          console.log(chartData);
+          // console.log(chartData);
 
           chart.validateData();
         },
