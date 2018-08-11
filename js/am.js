@@ -7,7 +7,7 @@
 	var cRAMPostion = 0;
 	var cNetworkPostion = 0;	
 	var interval;
-	
+	var playing = true;
 	moveCharts();
 
   $('#computer-load').on('click', 'button', function() {
@@ -29,7 +29,12 @@
     }
 
   });
-
+  $("#play").click(function () {
+    playing = true;
+  });
+  $("#pause").click(function () {
+    playing = false;
+  });
   function loadNewData(url) {
     $.ajax({
       url: url,
@@ -42,8 +47,12 @@
         var forecast = data.forecast_result["0"].metrics_forecast;
         var recommended = data.forecast_result["0"].recommendation_forecast;
 
-        // console.log(data);
-        for (let i = 0; i < cpuData.forecast.length; i++) {
+        console.log(data);
+        // cpuData = [];
+        var oldCpuData = [];
+        var newHistoryData = [];
+        var newForeCastData = [];
+        for (let i = 0; i < 200; i++) {
           const smallData = cpuData.forecast[i];
 
           if (new Date(smallData.timestamp) <= new Date(cpuChart.endDate)) {
@@ -52,16 +61,25 @@
               forecast: smallData.value,
               history: cpuData.history[i].value
             });
+            newHistoryData.push(cpuData.history[i].value);
+            newForeCastData.push(smallData.value);
           } else {
             newChartData.push({
               date: new Date(forecast[i].timestamp),
               history: history[i] ? history[i].value : '',
               forecast: forecast[i].value,
             });
+
+            newHistoryData.push(history[i] ? history[i].value : '');
+            newForeCastData.push(forecast[i].value);
           }
 
         }
         cpuChart.dataProvider = newChartData;
+
+        cpuData = [];
+        cpuData.history = newHistoryData;
+        cpuData.forecast = newForeCastData;
         cpuChart.validateData();
         console.log(cpuChart.endDate)
         
@@ -92,7 +110,14 @@
 	
 
 	function moveCharts(){
-		interval = setInterval( function() {	  
+		interval = setInterval( function() {
+			
+		  if(playing){
+			  if($( "#play" ).hasClass('btn-success'))
+				$( "#play" ).removeClass('btn-success');				
+			  
+			  if(!$( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).addClass('btn-danger');
 			if(cCPUPostion == cpuChart.dataProvider.length - 21)
 				cCPUPostion = 0;
 			else
@@ -113,8 +138,14 @@
 				cNetworkPostion++;
 			
 			networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
-			
-		}, 1000 );
+		  }else{
+			  if(!$( "#play" ).hasClass('btn-success'))
+				$( "#play" ).addClass('btn-success');				
+			  
+			  if($( "#pause" ).hasClass('btn-danger'))
+				$( "#pause" ).removeClass('btn-danger');
+		  }
+		}, 100 );
 	}
 
   // CPU ustilization chart
@@ -361,7 +392,7 @@
           var recommended = data.forecast_result["0"].recommendation_forecast;
 
             // console.log('reco',recommended);
-          for (var i = 0; i < 400; i++) {
+          for (var i = 0; i < 200; i++) {
             // we create date objects here. In your data, you can have date strings
             // and then set format of your dates using chart.dataDateFormat property,
             // however when possible, use date objects, as this will speed up chart rendering.

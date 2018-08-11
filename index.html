@@ -89,7 +89,12 @@
                         <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
 
                     </div>
-                    <h2 class="h6 mb-2">CPU Utilization</h2>
+                    <h2 class="h6 mb-2">CPU Utilization</h2> 
+					<div class="float-right">
+                        <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
+                        <button type="button" class="btn btn-danger" id="pause">Pause</button>
+                    </div>
+					
                     <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
                         <canvas id="cpu-util-chart"></canvas>
                     </div>
