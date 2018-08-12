@@ -14,12 +14,12 @@
   var networkDataUrl = '';
   moveCharts();
 
-  var cpuThreshold = 100;
+  var cpuThreshold = 70;
   var ramThreshold = 512;
   var networkThreshold = 200;
 
   var currentMachineType = "n1-standard-2";
-  var currentMachinesCount = 0;
+  var currentMachinesCount = 1;
 
   (function () {
     console.log('calling list');
@@ -121,6 +121,7 @@
     playing = false;
   });
   function loadNewData(url, chart) {
+    console.log("SAGAR LOAD", url);
     $.ajax({
       url: url,
       dataType: 'json',
@@ -139,6 +140,7 @@
         var newForeCastData = [];
 
         if (chart == cpuChart) {
+    console.log("SAGAR LOAD CPU CHART");
           // cpuChart.dataProvider = newChartData;
           // cpuChart.validateData();
 
@@ -183,6 +185,7 @@
         // }
 
         if (chart == ramChart) {
+    console.log("SAGAR LOAD RAM CHART");
           for (let i = 0; i < 200; i++) {
             const smallData = ramData.forecast[i];
 
@@ -214,6 +217,7 @@
         }
 
         if (chart == networkChart) {
+    console.log("SAGAR LOAD NETOWRK CHART");
           console.log(networkData)
           for (let i = 0; i < 200; i++) {
             const smallData = networkData.forecast[i];
@@ -256,39 +260,39 @@
   }
 
   function cpuHistoryMultiplier(value){
-      var x = (cpuloadFactor *  (value/4))/100;
-      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      var x = ((cpuloadFactor *  (value/4))/100)/currentMachinesCount;
+      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
   function cpuForecastMultiplier(value){
-      var x = (cpuloadFactor *  (value/4))/100;
-      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+      var x = ((cpuloadFactor *  (value/4))/100)/currentMachinesCount;
+      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
   function ramHistoryMultiplier(value){
-      var x = (cpuloadFactor *  (value/2))/100;
-      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      var x = ((cpuloadFactor *  (value/2))/100)/currentMachinesCount;
+      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>ramThreshold?ramThreshold:load;
   }
 
   function ramForecastMultiplier(value){
-      var x = (cpuloadFactor *  (value/2))/100;
-      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+      var x = ((cpuloadFactor *  (value/2))/100)/currentMachinesCount;
+      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
       return load>ramThreshold?ramThreshold:load;
   }
 
   function networkHistoryMultiplier(value){
-      var x = (networkloadFactor *  value)/100;
-      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      var x = ((networkloadFactor *  value)/100)/currentMachinesCount;
+      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>networkThreshold?networkThreshold:load;
 
   }
 
   function networkForecastMultiplier(value){
-      var x =  (networkloadFactor *  value)/100;
-      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100;
+      var x =  ((networkloadFactor *  value)/100)/currentMachinesCount;
+      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
       return load>networkThreshold?networkThreshold:load;
 
   }
@@ -833,6 +837,8 @@
 
   $('.apply-button').click(function () {
     var machinesRequested = parseInt($('#'+this.id.split('-')[0] + '-chart .recommended-config').text().split('x')[1] );
+    const type = this.id.split('-')[0];
+    console.log("SAGAR ",type);
     if(machinesRequested === currentMachinesCount){
       alert('Machine is already in healthy state.');
     }
@@ -850,16 +856,38 @@
           success: function (data) {
             console.log("error : ", data);
             // Do something when new machine is created
-            currentMachinesCount++;
-            showPresentConfig();
+            responseFromHeroku(type);
           },
           error: function (err) {
             console.log("error : ", err);
+            responseFromHeroku(type);
           }
         })
       }
       //add currentMachinesCount;
     }
   });
+
+  function responseFromHeroku(type){
+
+    // Do something when new machine is created
+    currentMachinesCount++;
+    console.log("Sagar kk",type);
+    //if(type.toUpperCase() == "RAM"){
+      console.log("SAGAR calling ram",currentMachinesCount);
+      loadNewData('./data/RAM_n.json', ramChart);
+      loadNewData('./data/CPU_n.json', cpuChart);
+      loadNewData('./data/Network_n.json', networkChart);
+    //} else if(type.toUpperCase() == "CPU"){
+    //  console.log("SAGAR calling cpu",currentMachinesCount);
+    //  loadNewData('./data/CPU_n.json', cpuChart);
+    //} else if(type.toUpperCase() == "NETWORK"){
+    //  console.log("SAGAR calling network",currentMachinesCount);
+    //  loadNewData('./data/Network_n.json', networkChart);
+    //}
+    showPresentConfig();
+
+  }
+
 })(jQuery);
 
