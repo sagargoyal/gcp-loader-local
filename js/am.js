@@ -18,6 +18,31 @@
   var ramThreshold = 512;
   var networkThreshold = 200;
 
+  var currentMachineType = "n1-standard-2";
+  var currentMachinesCount = 0;
+
+  (function () {
+    console.log('calling list');
+    $.ajax({
+      method: 'POST',
+      url: 'http://localhost:8000/list',
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+        currentMachinesCount = data.length;
+        showPresentConfig();
+      },
+      error: function (err) {
+        console.log("error : ", err);
+      }
+    })
+  }());
+
+  function showPresentConfig(){
+    $('#cpu-chart .present-config').text(currentMachineType + ' x ' + currentMachinesCount);
+    $('#ram-chart .present-config').text(currentMachineType + ' x ' + currentMachinesCount);
+    $('#network-chart .present-config').text(currentMachineType + ' x ' + currentMachinesCount);
+  }
 
   $('#computer-load').on('click', 'button', function () {
     $this = $(this);
@@ -734,6 +759,10 @@
         return false;
     }
     return true;
+  }
+
+  function showRecommendedConfig(type /* type can be cpu, network or ram */, health /* health can be decrease, increase or healthy */){
+    //call this function when graph value updates
   }
 
 })(jQuery)
