@@ -14,6 +14,11 @@
   var networkDataUrl = '';
   moveCharts();
 
+  var cpuThreshold = 100;
+  var ramThreshold = 512;
+  var networkThreshold = 200;
+
+
   $('#computer-load').on('click', 'button', function () {
     $this = $(this);
 
@@ -228,36 +233,38 @@
   function cpuHistoryMultiplier(value){
       var x = (cpuloadFactor *  (value/4))/100;
       var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
-      return load>100?100:load;
+      return load>cpuThreshold?cpuThreshold:load;
   }
 
   function cpuForecastMultiplier(value){
       var x = (cpuloadFactor *  (value/4))/100;
       var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
-      return load>100?100:load;
+      return load>cpuThreshold?cpuThreshold:load;
   }
 
   function ramHistoryMultiplier(value){
       var x = (cpuloadFactor *  (value/2))/100;
       var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
-      return load>512?512:load;
+      return load>ramThreshold?ramThreshold:load;
   }
 
   function ramForecastMultiplier(value){
       var x = (cpuloadFactor *  (value/2))/100;
       var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
-      return load>512?512:load;
+      return load>ramThreshold?ramThreshold:load;
   }
 
   function networkHistoryMultiplier(value){
       var x = (networkloadFactor *  value)/100;
-      return (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      return load>networkThreshold?networkThreshold:load;
 
   }
 
   function networkForecastMultiplier(value){
       var x =  (networkloadFactor *  value)/100;
-      return (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100;
+      return load>networkThreshold?networkThreshold:load;
 
   }
 
