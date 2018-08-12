@@ -2,7 +2,9 @@
 
 	var cCPUPostion = 0;
 	var cRAMPostion = 0;
-	var cPCloadPostion = 0;	
+	var cPCloadPostion = 0;
+  var cpuloadFactor = 1;
+  var networkloadFactor = 1;	
   var interval;
   var pcloadDataUrl = '';
   var networkDataUrl = '';
@@ -22,16 +24,32 @@
 
     if ($this.hasClass('js-add')) {
       console.log('add');
-      $(this).parent().parent().find('input').val(2);
+      //$(this).parent().parent().find('input').val(2);
+
+      var value = parseFloat($('#cpuLoad').val());
+      value = (value+0.1).toFixed(1);
+      $('#cpuLoad').val(value);
       $(this).parent().parent().find('.js-minus').removeAttr('disabled');
-      $(this).attr('disabled', true);
-      loadNewData('./data/PC_load_boost_n.json', pcloadChart);
+      if(value >= 3){
+        $(this).attr('disabled', true);
+      }
+      //loadNewData('./data/CPU_boost_n.json', cpuChart);
+      cpuloadFactor = value;
+
+      //loadNewData('./data/PC_load_boost_n.json', pcloadChart);
+      loadNewData('./data/PC_load_n.json', pcloadChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
-      $(this).parent().parent().find('input').val(1);
+      var value = parseFloat($('#cpuLoad').val());
+      value = (value-0.1).toFixed(1);
+      $('#cpuLoad').val(value);
       $(this).parent().parent().find('.js-add').removeAttr('disabled');
-      $(this).attr('disabled', true);
+      if(value <= 1){
+        $(this).attr('disabled', true);
+      }
+      cpuloadFactor = value;
+
       loadNewData('./data/PC_load_n.json', pcloadChart);
     }
 
@@ -41,16 +59,33 @@
 
     if ($this.hasClass('js-add')) {
       console.log('add');
-      $(this).parent().parent().find('input').val(2);
+
+      var value = parseFloat($('#networkLoad').val());
+      value = (value+0.1).toFixed(1);
+      $('#networkLoad').val(value);
       $(this).parent().parent().find('.js-minus').removeAttr('disabled');
-      $(this).attr('disabled', true);
-      loadNewData('./data/Network_load_boost_n.json', networkChart);
+      if(value >= 3){
+        $(this).attr('disabled', true);
+      }
+      networkloadFactor = value;
+
+
+      //loadNewData('./data/Network_load_boost_n.json', networkChart);
+      loadNewData('./data/Network_load_n.json', networkChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
-      $(this).parent().parent().find('input').val(1);
+
+      var value = parseFloat($('#networkLoad').val());
+      value = (value-0.1).toFixed(1);
+      $('#networkLoad').val(value);
       $(this).parent().parent().find('.js-add').removeAttr('disabled');
-      $(this).attr('disabled', true);
+      if(value <= 1){
+        $(this).attr('disabled', true);
+      }
+      networkloadFactor = value;
+
+
       loadNewData('./data/Network_load_n.json', networkChart);
     }
 
@@ -67,10 +102,34 @@
         var recommended = data.forecast_result["0"].recommendation_forecast;
         var chartData = [];
         for (var i = 0; i < 200; i++) {
+
+
+          var historyValue =  history[i] ? history[i].value : '';
+          var forecastValue =  forecast[i] ? forecast[i].value : '';
+
+          if(chart == pcloadChart){
+            if(historyValue){
+              historyValue = cpuHistoryMultiplier(historyValue);
+            }
+            if(forecastValue){
+              forecastValue = cpuForecastMultiplier(forecastValue);
+            }
+          } else if(chart == networkChart){
+            if(historyValue){
+              historyValue = networkHistoryMultiplier(historyValue);
+            }
+            if(forecastValue){
+              forecastValue = networkForecastMultiplier(forecastValue);
+            }
+
+          }
+
           chartData.push({
             date: new Date(forecast[i].timestamp),
-            history: history[i] ? history[i].value : '',
-            forecast: forecast[i].value,
+            //history: history[i] ? history[i].value : '',
+            history: historyValue,
+            //forecast: forecast[i].value,
+            forecast: forecastValue,
             // recommended: forecast[i].value
           });
         }
@@ -99,7 +158,7 @@
         var newForeCastData = [];
 
         if (chart == pcloadChart) {
-
+          console.log(cpuloadFactor);
           for (let i = 0; i < 200; i++) {
             const smallData = pcloadData.forecast[i];
 
@@ -114,12 +173,13 @@
             } else {
               newChartData.push({
                 date: new Date(forecast[i].timestamp),
-                history: history[i] ? history[i].value : '',
-                forecast: forecast[i].value,
+                //history: history[i] ? history[i].value : '',
+                history: history[i] ? cpuHistoryMultiplier(history[i].value) : '',
+                forecast: cpuForecastMultiplier(forecast[i].value),
               });
 
-              newHistoryData.push(history[i] ? history[i].value : '');
-              newForeCastData.push(forecast[i].value);
+              newHistoryData.push(history[i] ? cpuHistoryMultiplier(history[i].value) : '');
+              newForeCastData.push(cpuForecastMultiplier(forecast[i].value));
             }
           }
 
@@ -145,12 +205,12 @@
             } else {
               newChartData.push({
                 date: new Date(forecast[i].timestamp),
-                history: history[i] ? history[i].value : '',
-                forecast: forecast[i].value,
+                history: history[i] ? networkHistoryMultiplier(history[i].value) : '',
+                forecast: networkForecastMultiplier(forecast[i].value),
               });
 
-              newHistoryData.push(history[i] ? history[i].value : '');
-              newForeCastData.push(forecast[i].value);
+              newHistoryData.push(history[i] ? networkHistoryMultiplier(history[i].value) : '');
+              newForeCastData.push(networkForecastMultiplier(forecast[i].value));
             }
           }
           networkData = [];
@@ -433,9 +493,30 @@
             var newDate = new Date(firstDate);
             newDate.setDate(newDate.getDate() + i);
 
+            var historyValue =  history[i].value;
+
+            if (url === './data/CPU_n.json') {
+              if(historyValue){
+                historyValue = cpuHistoryMultiplier(historyValue);
+              }
+            } else if (url === './data/Network_load_n.json') {
+              if(historyValue){
+                historyValue = networkHistoryMultiplier(historyValue);
+              }
+
+            } else if (url === './data/PC_load_n.json') {
+              if(historyValue){
+                historyValue = cpuHistoryMultiplier(historyValue);
+              }
+
+            }
+
+
+
             chartData.push({
               date: history[i].timestamp,
-              history: history[i].value,
+              //history: history[i].value,
+              history: historyValue,
             });
 
             $('.amcharts-chart-div a').hide();
@@ -489,6 +570,33 @@
     console.log(chart);
     return chart;
   }
+
+    function cpuHistoryMultiplier(value){
+      var x = (cpuloadFactor *  (value/4))/100;
+      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+      console.log(load);
+      return load>100?100:load;
+    }
+
+    function cpuForecastMultiplier(value){
+      var x = (cpuloadFactor *  (value/4))/100;
+      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+      return load>100?100:load;
+    }
+
+    function networkHistoryMultiplier(value){
+      var x = (networkloadFactor *  value)/100;
+      return (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+
+    }
+
+    function networkForecastMultiplier(value){
+      var x =  (networkloadFactor *  value)/100;
+      return (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+
+    }
+
+
 
 
   function _el(id) {
