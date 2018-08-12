@@ -775,12 +775,30 @@
   $('.apply-button').click(function () {
     var machinesRequested = parseInt($('#'+this.id.split('-')[0] + '-chart .recommended-config').text().split('x')[1] );
     if(machinesRequested === currentMachinesCount){
-      //ignore
+      alert('Machine is already in healthy state.');
     }
     else if (machinesRequested < currentMachinesCount){
       // delete machinesRequested
     }
     else{
+      for(let i = 0; i < currentMachinesCount ; i++){
+        $.ajax({
+          method: 'POST',
+          url: 'http://gcp-loader.herokuapp.com/add',
+          dataType: 'json',
+          contentType: "application/json",
+          data: JSON.stringify({"instanceType":"n1-standard-2"}),
+          success: function (data) {
+            console.log("error : ", data);
+            // Do something when new machine is created
+            currentMachinesCount++;
+            showPresentConfig();
+          },
+          error: function (err) {
+            console.log("error : ", err);
+          }
+        })
+      }
       //add currentMachinesCount;
     }
   });
