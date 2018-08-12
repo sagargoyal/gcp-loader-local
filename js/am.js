@@ -25,16 +25,12 @@
     console.log('calling list');
     $.ajax({
       method: 'POST',
-      url: 'http://localhost:8000/list',
+      url: 'http://gcp-loader.herokuapp.com/list',
       dataType: 'json',
       contentType: "application/json",
       success: function (data) {
         currentMachinesCount = data.length;
         showPresentConfig();
-        // dummy code below, needs to remove when sagar is done.
-        showRecommendedConfig('ram', 'healthy');
-        showRecommendedConfig('cpu', 'increase');
-        showRecommendedConfig('network', 'decrease');
       },
       error: function (err) {
         console.log("error : ", err);
@@ -776,5 +772,5 @@
     $('#'+ type +'-chart .recommended-config').text(keyVal[health]);
   }
 
-})(jQuery)
+})(jQuery);
 
