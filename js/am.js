@@ -151,8 +151,8 @@
                 forecast: smallData.value,
                 history: cpuData.history[i].value
               });
-              newHistoryData.push(cpuData.history[i].value);
-              newForeCastData.push(smallData.value);
+              newHistoryData.push({timestamp:(smallData.timestamp),value:cpuData.history[i].value});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:smallData.value});
             } else {
               newChartData.push({
                 date: new Date(forecast[i].timestamp),
@@ -162,8 +162,8 @@
                 forecast: (cpuForecastMultiplier(forecast[i].value)),
               });
 
-              newHistoryData.push(history[i] ? (cpuHistoryMultiplier(history[i].value)) : '');
-              newForeCastData.push((cpuForecastMultiplier(forecast[i].value)));
+              newHistoryData.push({timestamp:(smallData.timestamp),value:(history[i] ? (cpuHistoryMultiplier(history[i].value)) : '')});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:(cpuForecastMultiplier(forecast[i].value))});
             }
 
           }
@@ -192,8 +192,8 @@
                 forecast: smallData.value,
                 history: networkData.history[i].value
               });
-              newHistoryData.push(ramData.history[i].value);
-              newForeCastData.push(smallData.value);
+              newHistoryData.push({timestamp:(smallData.timestamp),value:ramData.history[i].value});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:smallData.value});
             } else {
               newChartData.push({
                 date: new Date(forecast[i].timestamp),
@@ -201,8 +201,8 @@
                 forecast: (ramForecastMultiplier(forecast[i].value)),
               });
 
-              newHistoryData.push(history[i] ? (ramHistoryMultiplier(history[i].value)) : '');
-              newForeCastData.push((ramForecastMultiplier(forecast[i].value)));
+              newHistoryData.push({timestamp:(smallData.timestamp),value:(history[i] ? (ramHistoryMultiplier(history[i].value)) : '')});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:(ramForecastMultiplier(forecast[i].value))});
             }
 
           }
@@ -224,8 +224,8 @@
                 forecast: smallData.value,
                 history: networkData.history[i].value
               });
-              newHistoryData.push(networkData.history[i].value);
-              newForeCastData.push(smallData.value);
+              newHistoryData.push({timestamp:(smallData.timestamp),value:networkData.history[i].value});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:smallData.value});
             } else {
               newChartData.push({
                 date: new Date(forecast[i].timestamp),
@@ -233,8 +233,8 @@
                 forecast: (networkForecastMultiplier(forecast[i].value)),
               });
 
-              newHistoryData.push(history[i] ? (networkHistoryMultiplier(history[i].value)) : '');
-              newForeCastData.push((networkForecastMultiplier(forecast[i].value)));
+              newHistoryData.push({timestamp:(smallData.timestamp),value:(history[i] ? (networkHistoryMultiplier(history[i].value)) : '')});
+              newForeCastData.push({timestamp:(smallData.timestamp),value:(networkForecastMultiplier(forecast[i].value))});
             }
 
           }
@@ -304,6 +304,8 @@
         var forecast = data.forecast_result["0"].metrics_forecast;
         var recommended = data.forecast_result["0"].recommendation_forecast;
         var chartData = [];
+        var newHistoryData = [];
+        var newForecastData = [];
         for (var i = 0; i < 200; i++) {
 
           var historyValue =  history[i] ? history[i].value : '';
@@ -344,18 +346,20 @@
             //forecast: forecast[i].value,
             // recommended: forecast[i].value
           });
+          newHistoryData.push({timestamp:(forecast[i].timestamp),value:(history[i] ? historyValue : '')});
+          newForecastData.push({timestamp:(forecast[i].timestamp),value:(forecastValue)});
         }
         if (chart == cpuChart) {
-          cpuData.history = history;
-          cpuData.forecast = forecast;
+          cpuData.history = newHistoryData;
+          cpuData.forecast = newForecastData;
           cpuData.recommended = recommended;
         }  else if (chart == ramChart) {
-          ramData.history = history;
-          ramData.forecast = forecast;
+          ramData.history = newHistoryData;
+          ramData.forecast = newForecastData;
           ramData.recommended = recommended;
         } else {
-          ramData.history = history;
-          ramData.forecast = forecast;
+          ramData.history = newHistoryData;
+          ramData.forecast = newForecastData;
           ramData.recommended = recommended;
         }
         chart.dataProvider = chartData;
@@ -478,6 +482,51 @@
 
   }
 
+  function fetchRecommendationData() {
+    var end = cpuChart.endDate;
+    var recCPUData;
+    var recRAMData;
+    var recNetworkData;
+    for (let i = 0; i < 200; i++) {
+      recCPUData = cpuData.history[i];
+      recRAMData = ramData.history[i];
+      recNetworkData = networkData.history[i];
+      if (new Date(recCPUData.timestamp) >= end ) {
+        recCPUData = cpuData.history[i];
+        recRAMData = ramData.history[i];
+        recNetworkData = networkData.history[i];
+        break;
+      }
+    }
+    var recCPUDataValue = recCPUData.value;
+    var recRAMDataValue = recRAMData.value;
+    var recNetworkDataValue = recNetworkData.value;
+
+    var cpuHealth = (recCPUDataValue/cpuThreshold)*100;
+    var ramHealth = (recRAMDataValue/ramThreshold)*100;
+    var networkHealth = (recNetworkDataValue/networkThreshold)*100;
+
+    showRecommendedConfig("cpu",getHealthStatus(cpuHealth));
+    showRecommendedConfig("ram",getHealthStatus(ramHealth));
+    showRecommendedConfig("network",getHealthStatus(networkHealth));
+
+  }
+
+  function getHealthStatus(value){
+
+    if(value > 75){
+
+      return "increase";
+    } else if (value < 30){
+
+      return "decrease";
+    } else {
+
+      return "healthy";
+    }
+
+  }
+
   function moveCharts() {
     interval = setInterval(function () {
 
@@ -523,6 +572,9 @@
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
       }
+      
+      fetchRecommendationData();      
+
     }, 900);
   }
 
@@ -656,6 +708,10 @@
           var forecast = data.forecast_result["0"].metrics_forecast;
           var recommended = data.forecast_result["0"].recommendation_forecast;
 
+          var newHistoryData = [];
+          var newForecastData = [];          
+
+
           // console.log('reco',recommended);
           for (var i = 0; i < 200; i++) {
             // we create date objects here. In your data, you can have date strings
@@ -702,6 +758,9 @@
               // recommended: forecast[i].value
             });
 
+            newHistoryData.push({timestamp:(forecast[i].timestamp),value:(history[i] ? historyValue : '')});
+            newForecastData.push({timestamp:(forecast[i].timestamp),value:(forecastValue)});
+
 
           }
           $('.amcharts-chart-div a').hide();
@@ -712,22 +771,22 @@
 
           if (url === './data/CPU_n.json') {
             cpuChart = chart;
-            cpuData.history = history;
-            cpuData.forecast = forecast;
+            cpuData.history = newHistoryData;
+            cpuData.forecast = newForecastData;
             cpuData.recommended = recommended;
           }
 
           if (url === './data/RAM_n.json') {
             ramChart = chart;
-            ramData.history = history;
-            ramData.forecast = forecast;
+            ramData.history = newHistoryData;
+            ramData.forecast = newForecastData;
             ramData.recommended = recommended;
           }
 
           if (url === './data/Network_n.json') {
             networkChart = chart;
-            networkData.history = history;
-            networkData.forecast = forecast;
+            networkData.history = newHistoryData;
+            networkData.forecast = newForecastData;
             networkData.recommended = recommended;
           }
           //   console.log(chartData);
