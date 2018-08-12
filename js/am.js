@@ -772,5 +772,17 @@
     $('#'+ type +'-chart .recommended-config').text(keyVal[health]);
   }
 
+  $('.apply-button').click(function () {
+    var machinesRequested = parseInt($('#'+this.id.split('-')[0] + '-chart .recommended-config').text().split('x')[1] );
+    if(machinesRequested === currentMachinesCount){
+      //ignore
+    }
+    else if (machinesRequested < currentMachinesCount){
+      // delete machinesRequested
+    }
+    else{
+      //add currentMachinesCount;
+    }
+  });
 })(jQuery);
 
