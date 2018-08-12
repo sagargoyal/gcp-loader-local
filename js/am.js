@@ -31,6 +31,10 @@
       success: function (data) {
         currentMachinesCount = data.length;
         showPresentConfig();
+        // dummy code below, needs to remove when sagar is done.
+        showRecommendedConfig('ram', 'healthy');
+        showRecommendedConfig('cpu', 'increase');
+        showRecommendedConfig('network', 'decrease');
       },
       error: function (err) {
         console.log("error : ", err);
@@ -762,7 +766,14 @@
   }
 
   function showRecommendedConfig(type /* type can be cpu, network or ram */, health /* health can be decrease, increase or healthy */){
+    console.log(type, health);
     //call this function when graph value updates
+    const keyVal = {
+      'decrease' : currentMachineType + ' x ' + (((currentMachinesCount / 2) < 1) ? 1 :  currentMachinesCount / 2),
+      'increase' : currentMachineType + ' x ' + currentMachinesCount * 2 ,
+      'healthy' : 'No Changes required'
+    };
+    $('#'+ type +'-chart .recommended-config').text(keyVal[health]);
   }
 
 })(jQuery)
