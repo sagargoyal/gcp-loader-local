@@ -78,7 +78,7 @@
       }
       cpuloadFactor = value;
       loadNewData('./data/CPU_n.json', cpuChart);
-      loadNewData('./data/RAM_n.json', ramChart); 
+      loadNewData('./data/RAM_n.json', ramChart);
 
     }
 
@@ -100,7 +100,7 @@
       }
       networkloadFactor = value;
       //loadNewData('./data/Network_boost_n.json', networkChart);
-      loadNewData('./data/Network_n.json', networkChart);      
+      loadNewData('./data/Network_n.json', networkChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
@@ -255,7 +255,7 @@
         }
         chart.dataProvider = newChartData;
         chart.validateData();
-        
+
 
       },
       error: function (err) {
@@ -265,19 +265,32 @@
   }
 
   function cpuHistoryMultiplier(value){
-      var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
-      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
+      var x = value * 100;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      //var load = x;
+      console.log("history value : " + value + " load :" + load);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
   function cpuForecastMultiplier(value){
-      var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
-      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
-      if(isThresholdForecast){
-        return load>cpuThreshold?cpuThreshold:load;
-      } else {
-        return load;
-      }
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
+      // var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
+      // if(isThresholdForecast){
+      //   return load>cpuThreshold?cpuThreshold:load;
+      // } else {
+      //   return load;
+      // }
+
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
+      var x = value * 100;
+      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+    //  var load = x;
+    console.log("forecast value : " + value + " load :" + load);
+      // return load>cpuThreshold?cpuThreshold:load;
+      return load;
   }
 
   function ramHistoryMultiplier(value){
@@ -401,7 +414,7 @@
     var html = '';
     var html2 = '';
     for (let i = 0; i < 200; i++) {
-      
+
       var recCPUData = cpuData.history[i];
       var recRAMData = ramData.history[i];
       var recNetworkData = networkData.history[i];
@@ -467,7 +480,7 @@
           html2 += '<td style="color:red">Critical - Increase Cores</td>';
           html2 += '</tr>';
         }
-        
+
 
          if (ramHealth < 20) {
           // CPU outage
@@ -518,7 +531,7 @@
           html2 += '<td style="color:red">Critical - Increase RAM</td>';
           html2 += '</tr>';
         }
-        
+
         if (networkHealth < 20) {
           // CPU outage
           html += '<tr>';
@@ -570,7 +583,7 @@
         }
 
       }
-      
+
     }
     $('#events').find('tbody').html(html);
     $('#triggers').find('tbody').html(html2);
@@ -609,7 +622,7 @@
        }
 
     }
-   
+
     let i = (chart_start_index+chart_end_index)/2;
 
 
@@ -654,7 +667,7 @@
       if (playing) {
          fetchEventsLog();
          fetchTriggersLog();
-      
+
         if ($("#play").hasClass('btn-success'))
           $("#play").removeClass('btn-success');
 
@@ -686,18 +699,18 @@
           cNetworkPostion++;
 
         networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
-        fetchRecommendationData();      
+        fetchRecommendationData();
       } else {
         if (!$("#play").hasClass('btn-success'))
           $("#play").addClass('btn-success');
 
-   
+
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
 
       }
-      
-   //   fetchRecommendationData();      
+
+   //   fetchRecommendationData();
 
     }, 900);
   }
@@ -833,7 +846,7 @@
           var recommended = data.forecast_result["0"].recommendation_forecast;
 
           var newHistoryData = [];
-          var newForecastData = [];          
+          var newForecastData = [];
 
 
           // console.log('reco',recommended);
@@ -1010,4 +1023,3 @@
   }
 
 })(jQuery);
-

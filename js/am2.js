@@ -4,7 +4,7 @@
 	var cRAMPostion = 0;
 	var cPCloadPostion = 0;
   var cpuloadFactor = 1;
-  var networkloadFactor = 1;	
+  var networkloadFactor = 1;
   var interval;
   var pcloadDataUrl = '';
   var networkDataUrl = '';
@@ -19,14 +19,14 @@
 	var playing = true;
 
 	moveCharts();
-	
+
 	$( "#play" ).click(function() {
 	 playing = true;
 	});
 	$( "#pause" ).click(function() {
 		playing = false;
   });
-  
+
   $('#compute-load').on('click', 'button', function () {
     $this = $(this);
 
@@ -241,29 +241,29 @@
 		interval = setInterval( function() {
 			if(playing){
 			  if($( "#play" ).hasClass('btn-success'))
-				$( "#play" ).removeClass('btn-success');				
-			  
+				$( "#play" ).removeClass('btn-success');
+
 			  if(!$( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).addClass('btn-danger');
-			
+
 				if(cCPUPostion == networkChart.dataProvider.length - 21) {
 					cCPUPostion = 0;
           updateChart(networkChart, networkDataUrl);
         }
 				else
 					cCPUPostion++;
-				
+
 				networkChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
-				
+
 				if(cRAMPostion == pcloadChart.dataProvider.length - 21) {
 					cRAMPostion = 0;
 
         }
 				else
 					cRAMPostion++;
-				
+
 				pcloadChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
-				
+
 				if(cPCloadPostion == cpuChart.dataProvider.length - 21) {
           cPCloadPostion = 0;
           updateChart(pcloadChart, pcloadDataUrl);
@@ -271,21 +271,21 @@
         }
 				else
 					cPCloadPostion++;
-				
+
 				cpuChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
 			}else{
 			  if(!$( "#play" ).hasClass('btn-success'))
-				$( "#play" ).addClass('btn-success');				
-			  
+				$( "#play" ).addClass('btn-success');
+
 			  if($( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).removeClass('btn-danger');
 		  }
 		}, 900 );
 	}
 
-	
-		    
-	
+
+
+
   // CPU ustilization chart
   var networkChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
 
@@ -334,7 +334,7 @@
           });
         }
 
-        var allCharts = AmCharts.charts; 
+        var allCharts = AmCharts.charts;
         allCharts[2].dataProvider = newChartData;
         allCharts[2].validateData();
       }
@@ -538,7 +538,7 @@
          networkChart = chart;
          networkData.history = history;
          networkData.forecast = forecast;
-        
+
 			}
 
 			if (url === './data/PC_load_n.json') {
@@ -552,9 +552,9 @@
         cpuData.history = history;
         cpuData.forecast = forecast;
       }
-      
+
       console.log(cpuData);
-			
+
           // console.log(chartData);
 
           chart.validateData();

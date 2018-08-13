@@ -109,7 +109,7 @@ var value, data = { "error_message": null, "forecast_params": { "agg_period": "3
     function loadData(url, target, chart) {
         $.ajax({
             url: url,
-            // url: '/data/data.json',   
+            // url: '/data/data.json',
             // data: dataParam,
             dataType: 'json',
             contentType: "application/json",
@@ -252,7 +252,7 @@ var value, data = { "error_message": null, "forecast_params": { "agg_period": "3
         }
         return true;
     }
-    // Counter code 
+    // Counter code
 
 
     $('.btn-number').click(function(e) {
