@@ -425,7 +425,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 90) {
+        } else if (cpuHealth > 75 && cpuHealth < 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -437,7 +437,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 75) {
+        } else if (cpuHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -476,7 +476,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 90) {
+        } else if (ramHealth > 75 && ramHealth <90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -488,7 +488,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 75) {
+        } else if (ramHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -526,7 +526,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 90) {
+        } else if (networkHealth > 75 && networkHealth <90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -538,7 +538,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 75) {
+        } else if (networkHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
