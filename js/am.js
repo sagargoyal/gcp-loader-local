@@ -317,7 +317,7 @@
   function networkHistoryMultiplier(value){
       value = (value/1024)/1024;
       var x = ((networkloadFactor *  value)/100)/currentMachinesCount;
-      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
+      var load = ((((0.5)*(Math.pow(x,2))) + (0.3*x) + 0.2)*100);
       return load>networkThreshold?networkThreshold:load;
 
   }
@@ -325,7 +325,7 @@
   function networkForecastMultiplier(value){
       value = (value/1024)/1024;
       var x =  ((networkloadFactor *  value)/100)/currentMachinesCount;
-      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
+      var load = ((((0.5)*(Math.pow(x,2))) + (0.3*x) + 0.2)*100);
       if(isThresholdForecast){
         return load>networkThreshold?networkThreshold:load;
       } else {
@@ -812,6 +812,15 @@
       //   graph3.hideBulletsCount = 24;
       //   graph3.bulletBorderThickness = 1;
       //   chart.addGraph(graph3);
+
+        var graph3 = new AmCharts.AmGraph();
+        graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
+        graph3.title = "Raw data";
+        graph3.valueField = "raw";
+        graph3.bullet = "round";
+        graph3.hideBulletsCount = 24;
+        graph3.bulletBorderThickness = 1;
+        chart.addGraph(graph3);
 
       // CURSOR
       var chartCursor = new AmCharts.ChartCursor();
