@@ -8,9 +8,13 @@
   var interval;
   var pcloadDataUrl = '';
   var networkDataUrl = '';
+
   var cpuThreshold = 100;
-  var ramThreshold = 512;
-  var networkThreshold = 200;
+  var ramThreshold = 64;
+  var networkThreshold = 100;
+  var cpuReductionFactor = 1;
+  var isThresholdForecast = false;
+
 
 	var playing = true;
 
@@ -576,16 +580,20 @@
   }
 
     function cpuHistoryMultiplier(value){
-      var x = (cpuloadFactor *  (value/4))/100;
+      var x = (cpuloadFactor *  (value/cpuReductionFactor))/100;
       var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
       console.log(load);
       return load>cpuThreshold?cpuThreshold:load;
     }
 
     function cpuForecastMultiplier(value){
-      var x = (cpuloadFactor *  (value/4))/100;
+      var x = (cpuloadFactor *  (value/cpuReductionFactor))/100;
       var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
-      return load>cpuThreshold?cpuThreshold:load;
+      if(isThresholdForecast){
+        return load>cpuThreshold?cpuThreshold:load;
+      } else {
+        return load;
+      }
     }
 
     function networkHistoryMultiplier(value){
@@ -598,7 +606,11 @@
     function networkForecastMultiplier(value){
       var x =  (networkloadFactor *  value)/100;
       var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100;
-      return load>networkThreshold?networkThreshold:load;
+      if(isThresholdForecast){
+        return load>networkThreshold?networkThreshold:load;
+      } else {
+        return load;
+      }
 
     }
 
