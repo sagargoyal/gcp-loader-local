@@ -20,7 +20,7 @@
 
   var currentMachineType = "n1-standard-2";
   var currentMachinesCount = 1;
-
+  var machineNames = [];
   (function () {
     console.log('calling list');
     $.ajax({
@@ -30,6 +30,7 @@
       contentType: "application/json",
       success: function (data) {
         currentMachinesCount = data.length;
+        machineNames = data.map((v) => v.name);
         showPresentConfig();
       },
       error: function (err) {
@@ -569,6 +570,7 @@
   }
 
   function fetchRecommendationData() {
+    console.log('fetchRecommendationData');
     var end = cpuChart.endDate;
     var recCPUData;
     var recRAMData;
@@ -654,6 +656,7 @@
           cNetworkPostion++;
 
         networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
+        fetchRecommendationData();
       } else {
         if (!$("#play").hasClass('btn-success'))
           $("#play").addClass('btn-success');
@@ -662,11 +665,11 @@
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
 
-        fetchRecommendationData();      
+   //     fetchRecommendationData();
 
       }
       
-   //   fetchRecommendationData();      
+
 
     }, 900);
   }
@@ -933,6 +936,26 @@
     }
     else if (machinesRequested < currentMachinesCount){
       // delete machinesRequested
+      for(let i = 0; i < machinesRequested ; i++){
+        $.ajax({
+          method: 'POST',
+          url: 'http://gcp-loader.herokuapp.com/delete',
+          dataType: 'json',
+          contentType: "application/json",
+          data: JSON.stringify({"name":machineNames[i]}),
+          success: function (data) {
+            console.log("error : ", data);
+            // Do something when new machine is created
+            currentMachinesCount--;
+            responseFromHeroku(type);
+          },
+          error: function (err) {
+            console.log("error : ", err);
+            //currentMachinesCount++;
+            //responseFromHeroku(type);
+          }
+        })
+      }
     }
     else{
       for(let i = 0; i < currentMachinesCount ; i++){
@@ -943,12 +966,15 @@
           contentType: "application/json",
           data: JSON.stringify({"instanceType":"n1-standard-2"}),
           success: function (data) {
-            console.log("error : ", data);
+            console.log("success : ", data);
+            machineNames.push(data);
             // Do something when new machine is created
+            currentMachinesCount++;
             responseFromHeroku(type);
           },
           error: function (err) {
             console.log("error : ", err);
+            currentMachinesCount++;
             responseFromHeroku(type);
           }
         })
@@ -960,7 +986,6 @@
   function responseFromHeroku(type){
 
     // Do something when new machine is created
-    currentMachinesCount++;
     console.log("Sagar kk",type);
     //if(type.toUpperCase() == "RAM"){
       console.log("SAGAR calling ram",currentMachinesCount);
