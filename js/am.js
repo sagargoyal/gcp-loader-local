@@ -691,6 +691,7 @@
           cNetworkPostion++;
 
         networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
+        fetchRecommendationData();      
       } else {
         if (!$("#play").hasClass('btn-success'))
           $("#play").addClass('btn-success');
@@ -698,8 +699,6 @@
    
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
-
-        fetchRecommendationData();      
 
       }
       
