@@ -443,7 +443,7 @@
       // first graph
       var graph1 = new AmCharts.AmGraph();
       graph1.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-      graph1.title = "History data";
+      graph1.title = "Live Data";
       graph1.valueField = "history";
       graph1.bullet = "round";
       graph1.hideBulletsCount = 24;

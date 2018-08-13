@@ -389,87 +389,169 @@
       var recRAMData = ramData.history[i];
       var recNetworkData = networkData.history[i];
 
+      var recCPUDataValue = recCPUData.value;
+      var recRAMDataValue = recRAMData.value;
+      var recNetworkDataValue = recNetworkData.value;
+
+      var cpuHealth = (recCPUDataValue/cpuThreshold)*100;
+      var ramHealth = (recRAMDataValue/ramThreshold)*100;
+      var networkHealth = (recNetworkDataValue/networkThreshold)*100;
+
       console.log(recCPUData.recomendation)
 
       if (new Date(recCPUData.timestamp) >= start && new Date(recCPUData.timestamp) <= end ) {
         // console.log(recCPUData.recomendation)
-        if (recCPUData.value < 50) {
+        if (cpuHealth < 20) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
-          html += '<td>CPU outage</td>';
+          html += '<td>Critical - Low CPU Utilization</td>';
           html += '</tr>';
 
           // CPU  deprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td>CPU deprovision</td>';
+          html2 += '<td>Critical - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (recCPUData.value > 75) {
+        } else if (cpuHealth < 40) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td>CPU excess</td>';
+          html += '<td>Warning - Low CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td>CPU overprovision</td>';
+          html2 += '<td>Warning - Decrease Cores</td>';
+          html2 += '</tr>';
+        } else if (cpuHealth > 75) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Warning - High CPU Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Warning - Increase Cores</td>';
+          html2 += '</tr>';
+        } else if (cpuHealth > 90) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Critical - High CPU Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Critical - Increase Cores</td>';
+          html2 += '</tr>';
+        }
+        
+
+         if (ramHealth < 20) {
+          // CPU outage
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp +'</td>';
+          html += '<td>Critical - Low RAM Utilization</td>';
+          html += '</tr>';
+
+          // CPU  deprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Critical - Decrease RAM</td>';
+          html2 += '</tr>';
+        } else if (ramHealth < 40) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Warning - Low RAM Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Warning - Decrease RAM</td>';
+          html2 += '</tr>';
+        } else if (ramHealth > 75) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Warning - High RAM Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Warning - Increase RAM</td>';
+          html2 += '</tr>';
+        } else if (ramHealth > 90) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Critical - High RAM Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Critical - Increase RAM</td>';
+          html2 += '</tr>';
+        }
+        
+        if (networkHealth < 20) {
+          // CPU outage
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp +'</td>';
+          html += '<td>Critical - Low Network Bandwidth Utilization</td>';
+          html += '</tr>';
+
+          // CPU  deprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Critical - Decrease Bandwidth Allocation</td>';
+          html2 += '</tr>';
+        } else if (networkHealth < 40) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Warning - Low Network Bandwidth Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Warning - Decrease Bandwidth Allocation</td>';
+          html2 += '</tr>';
+        } else if (networkHealth > 75) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Warning - High Network Bandwidth Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Warning - Increase Bandwidth Allocation</td>';
+          html2 += '</tr>';
+        } else if (cpuHealth > 90) {
+          // CPU excess
+          html += '<tr>';
+          html += '<td>' + recCPUData.timestamp + '</td>';
+          html += '<td>Critical - High Network Bandwidth Utilization</td>';
+          html += '</tr>';
+
+          // CPU overprovision
+          html2 += '<tr>';
+          html2 += '<td>' + recCPUData.timestamp + '</td>';
+          html2 += '<td>Critical - Increase Bandwidth Utilization</td>';
           html2 += '</tr>';
         }
 
-        if (recRAMData.value < 50) {
-          // RAM outage
-          html += '<tr>';
-          html += '<td>' + recRAMData.timestamp + '</td>';
-          html += '<td>RAM outage</td>';
-          html += '</tr>';
-
-          // RAM deprovision
-          html2 += '<tr>';
-          html2 += '<td>' + recRAMData.timestamp + '</td>';
-          html2 += '<td>RAM deprovision</td>';
-          html2 += '</tr>';
-        } else if (recRAMData.value > 75) {
-          // RAM excess
-          html += '<tr>';
-          html += '<td>' + recRAMData.timestamp + '</td>';
-          html += '<td>RAM excess</td>';
-          html += '</tr>';
-
-          // RAM overprovision
-          html2 += '<tr>';
-          html2 += '<td>' + recRAMData.timestamp + '</td>';
-          html2 += '<td>RAM overprovision</td>';
-          html2 += '</tr>';
-        }
-
-        if (recNetworkData.value < 50) {
-          // Network outage
-          html += '<tr>';
-          html += '<td>' + recNetworkData.timestamp + '</td>';
-          html += '<td>Network outage</td>';
-          html += '</tr>';
-
-          // Network deprovision
-          html2 += '<tr>';
-          html2 += '<td>' + recNetworkData.timestamp + '</td>';
-          html2 += '<td>Network deprovision</td>';
-          html2 += '</tr>';
-        } else if (recNetworkData.value > 75) {
-          // Network excess
-          html += '<tr>';
-          html += '<td>' + recNetworkData.timestamp + '</td>';
-          html += '<td>Network excess</td>';
-          html += '</tr>';
-
-          // Network overprovision
-          html2 += '<tr>';
-          html2 += '<td>' + recNetworkData.timestamp + '</td>';
-          html2 += '<td>Network overprovision</td>';
-          html2 += '</tr>';
-        }
       }
       
     }
@@ -534,10 +616,13 @@
   function moveCharts() {
     interval = setInterval(function () {
 
-      fetchEventsLog();
-      fetchTriggersLog();
+      //fetchEventsLog();
+      //fetchTriggersLog();
 
       if (playing) {
+         fetchEventsLog();
+         fetchTriggersLog();
+      
         if ($("#play").hasClass('btn-success'))
           $("#play").removeClass('btn-success');
 
@@ -573,11 +658,15 @@
         if (!$("#play").hasClass('btn-success'))
           $("#play").addClass('btn-success');
 
+   
         if ($("#pause").hasClass('btn-danger'))
           $("#pause").removeClass('btn-danger');
+
+        fetchRecommendationData();      
+
       }
       
-      fetchRecommendationData();      
+   //   fetchRecommendationData();      
 
     }, 900);
   }
@@ -645,7 +734,7 @@
       // first graph
       var graph1 = new AmCharts.AmGraph();
       graph1.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-      graph1.title = "History data";
+      graph1.title = "Live Data";
       graph1.valueField = "history";
       graph1.bullet = "round";
       graph1.hideBulletsCount = 24;
@@ -655,7 +744,7 @@
       // second graph
       var graph2 = new AmCharts.AmGraph();
       graph2.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-      graph2.title = "Forecast data";
+      graph2.title = "Predictions";
       graph2.valueField = "forecast";
       graph2.bullet = "square";
       graph2.hideBulletsCount = 24;
