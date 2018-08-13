@@ -20,8 +20,12 @@
   var cpuReductionFactor = 1;
   var ramReductionFactor = 1;
   var isThresholdForecast = false;
-
-
+  var low_critical = 10;
+  var low_warning = 20;
+  var high_critical = 95;
+  var high_warning = 85;
+  var recommendation_increase = 85;
+  var recommendation_decrease = 20;
 
   var currentMachineType = "n1-standard-2";
   var currentMachinesCount = 1;
@@ -139,7 +143,7 @@
         var forecast = data.forecast_result["0"].metrics_forecast;
         var recommended = data.forecast_result["0"].recommendation_forecast;
 
-        console.log(data);
+        //console.log(data);
         // cpuData = [];
         var oldCpuData = [];
         var newHistoryData = [];
@@ -271,7 +275,7 @@
       // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
       var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
       //var load = x;
-      console.log("history value : " + value + " load :" + load);
+      //console.log("history value : " + value + " load :" + load);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
@@ -289,7 +293,7 @@
       var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
       // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
     //  var load = x;
-    console.log("forecast value : " + value + " load :" + load);
+    //console.log("forecast value : " + value + " load :" + load);
       // return load>cpuThreshold?cpuThreshold:load;
       return load;
   }
@@ -430,11 +434,12 @@
       var ramHealth = (recRAMDataValue/ramThreshold)*100;
       var networkHealth = (recNetworkDataValue/networkThreshold)*100;
 
-      console.log(recCPUData.recomendation)
+      //console.log(recCPUData.recomendation)
+      //console.log(cpuHealth)
 
       if (new Date(recCPUData.timestamp) >= start && new Date(recCPUData.timestamp) <= end ) {
         // console.log(recCPUData.recomendation)
-        if (cpuHealth < 20) {
+        if (cpuHealth < low_critical) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -446,7 +451,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth < 40) {
+        } else if (cpuHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -458,7 +463,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 75 && cpuHealth < 90) {
+        } else if (cpuHealth > high_warning && cpuHealth < high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -470,7 +475,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 90) {
+        } else if (cpuHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -485,7 +490,7 @@
         }
 
 
-         if (ramHealth < 20) {
+         if (ramHealth < low_critical) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -497,7 +502,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth < 40) {
+        } else if (ramHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -509,7 +514,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 75 && ramHealth <90) {
+        } else if (ramHealth > high_warning && ramHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -521,7 +526,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 90) {
+        } else if (ramHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -535,7 +540,7 @@
           html2 += '</tr>';
         }
 
-        if (networkHealth < 20) {
+        if (networkHealth < low_warning) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -547,7 +552,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth < 40) {
+        } else if (networkHealth < low_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -559,7 +564,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 75 && networkHealth <90) {
+        } else if (networkHealth > high_warning && networkHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -571,7 +576,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 90) {
+        } else if (networkHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -648,10 +653,10 @@
 
   function getHealthStatus(value){
 
-    if(value > 75){
+    if(value > recommendation_increase){
 
       return "increase";
-    } else if (value < 30){
+    } else if (value < recommendation_decrease){
 
       return "decrease";
     } else {
