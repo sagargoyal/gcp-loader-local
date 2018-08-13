@@ -1017,12 +1017,36 @@
           },
           error: function (err) {
             console.log("error : ", err);
-            currentMachinesCount++;
-            responseFromHeroku(type);
+            //currentMachinesCount++;
+            //responseFromHeroku(type);
           }
         })
       }
       //add currentMachinesCount;
+    }
+  });
+
+  $('.reset-button').click(function () {
+    const machinesToDelete = machineNames.splice(1, machineNames.length - 1);
+    for(let i = 0; i < machinesToDelete.length ; i++){
+      $.ajax({
+        method: 'POST',
+        url: serverLInk + 'delete',
+        dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify({"name":machinesToDelete[i]}),
+        success: function (data) {
+          console.log("error : ", data);
+          // Do something when new machine is created
+          currentMachinesCount--;
+          responseFromHeroku('cpu');
+        },
+        error: function (err) {
+          console.log("error : ", err);
+          //currentMachinesCount++;
+          //responseFromHeroku(type);
+        }
+      })
     }
   });
 
