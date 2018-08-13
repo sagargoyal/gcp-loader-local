@@ -417,25 +417,25 @@
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - Low CPU Utilization</td>';
+          html += '<td style="color:blue">Warning - Low CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Decrease Cores</td>';
+          html2 += '<td style="color:blue">Warning - Decrease Cores</td>';
           html2 += '</tr>';
         } else if (cpuHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - High CPU Utilization</td>';
+          html += '<td style="color:blue">Warning - High CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Increase Cores</td>';
+          html2 += '<td style="color:blue">Warning - Increase Cores</td>';
           html2 += '</tr>';
         } else if (cpuHealth > 75) {
           // CPU excess
@@ -468,25 +468,25 @@
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - Low RAM Utilization</td>';
+          html += '<td style="color:blue">Warning - Low RAM Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Decrease RAM</td>';
+          html2 += '<td style="color:blue">Warning - Decrease RAM</td>';
           html2 += '</tr>';
         } else if (ramHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - High RAM Utilization</td>';
+          html += '<td style="color:blue">Warning - High RAM Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Increase RAM</td>';
+          html2 += '<td style="color:blue">Warning - Increase RAM</td>';
           html2 += '</tr>';
         } else if (ramHealth > 75) {
           // CPU excess
@@ -518,25 +518,25 @@
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - Low Network Bandwidth Utilization</td>';
+          html += '<td style="color:blue">Warning - Low Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Decrease Bandwidth Allocation</td>';
+          html2 += '<td style="color:blue">Warning - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
         } else if (networkHealth > 90) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:yellow">Warning - High Network Bandwidth Utilization</td>';
+          html += '<td style="color:blue">Warning - High Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:yellow">Warning - Increase Bandwidth Allocation</td>';
+          html2 += '<td style="color:blue">Warning - Increase Bandwidth Allocation</td>';
           html2 += '</tr>';
         } else if (networkHealth > 75) {
           // CPU excess
