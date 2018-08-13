@@ -13,15 +13,14 @@
   var networkloadFactor = 1;
   var networkDataUrl = '';
   moveCharts();
-
+  var serverLInk = "http://35.200.154.50:8000/";
+  //var serverLInk = "http://localhost:8000/";
   var cpuThreshold = 100;
   var ramThreshold = 64;
   var networkThreshold = 100;
   var cpuReductionFactor = 1;
   var ramReductionFactor = 1;
   var isThresholdForecast = false;
-
-
 
   var currentMachineType = "n1-standard-2";
   var currentMachinesCount = 1;
@@ -30,7 +29,7 @@
     console.log('calling list');
     $.ajax({
       method: 'POST',
-      url: 'http://gcp-loader.herokuapp.com/list',
+      url: serverLInk + 'list',
       dataType: 'json',
       contentType: "application/json",
       success: function (data) {
@@ -983,7 +982,7 @@
       for(let i = 0; i < machinesRequested ; i++){
         $.ajax({
           method: 'POST',
-          url: 'http://gcp-loader.herokuapp.com/delete',
+          url: serverLInk + 'delete',
           dataType: 'json',
           contentType: "application/json",
           data: JSON.stringify({"name":machineNames[i]}),
@@ -1005,7 +1004,7 @@
       for(let i = 0; i < currentMachinesCount ; i++){
         $.ajax({
           method: 'POST',
-          url: 'http://gcp-loader.herokuapp.com/add',
+          url: serverLInk + 'add',
           dataType: 'json',
           contentType: "application/json",
           data: JSON.stringify({"instanceType":"n1-standard-2"}),
