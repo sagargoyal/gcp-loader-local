@@ -298,6 +298,7 @@
   }
 
   function networkHistoryMultiplier(value){
+      value = (value/1024)/1024;
       var x = ((networkloadFactor *  value)/100)/currentMachinesCount;
       var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>networkThreshold?networkThreshold:load;
@@ -305,6 +306,7 @@
   }
 
   function networkForecastMultiplier(value){
+      value = (value/1024)/1024;
       var x =  ((networkloadFactor *  value)/100)/currentMachinesCount;
       var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
       if(isThresholdForecast){
