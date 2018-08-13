@@ -14,9 +14,14 @@
   var networkDataUrl = '';
   moveCharts();
 
-  var cpuThreshold = 70;
-  var ramThreshold = 512;
-  var networkThreshold = 200;
+  var cpuThreshold = 100;
+  var ramThreshold = 64;
+  var networkThreshold = 100;
+  var cpuReductionFactor = 1;
+  var ramReductionFactor = 1;
+  var isThresholdForecast = false;
+
+
 
   var currentMachineType = "n1-standard-2";
   var currentMachinesCount = 1;
@@ -260,27 +265,35 @@
   }
 
   function cpuHistoryMultiplier(value){
-      var x = ((cpuloadFactor *  (value/4))/100)/currentMachinesCount;
+      var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
       var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
   function cpuForecastMultiplier(value){
-      var x = ((cpuloadFactor *  (value/4))/100)/currentMachinesCount;
+      var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
       var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
-      return load>cpuThreshold?cpuThreshold:load;
+      if(isThresholdForecast){
+        return load>cpuThreshold?cpuThreshold:load;
+      } else {
+        return load;
+      }
   }
 
   function ramHistoryMultiplier(value){
-      var x = ((cpuloadFactor *  (value/2))/100)/currentMachinesCount;
+      var x = ((cpuloadFactor *  (value/ramReductionFactor))/100)/currentMachinesCount;
       var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
       return load>ramThreshold?ramThreshold:load;
   }
 
   function ramForecastMultiplier(value){
-      var x = ((cpuloadFactor *  (value/2))/100)/currentMachinesCount;
+      var x = ((cpuloadFactor *  (value/ramReductionFactor))/100)/currentMachinesCount;
       var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
-      return load>ramThreshold?ramThreshold:load;
+      if(isThresholdForecast){
+        return load>ramThreshold?ramThreshold:load;
+      } else {
+        return load;
+      }
   }
 
   function networkHistoryMultiplier(value){
@@ -293,7 +306,11 @@
   function networkForecastMultiplier(value){
       var x =  ((networkloadFactor *  value)/100)/currentMachinesCount;
       var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
-      return load>networkThreshold?networkThreshold:load;
+      if(isThresholdForecast){
+        return load>networkThreshold?networkThreshold:load;
+      } else {
+        return load
+      }
 
   }
 
@@ -569,11 +586,32 @@
   }
 
   function fetchRecommendationData() {
+    var start = cpuChart.startDate;
     var end = cpuChart.endDate;
     var recCPUData;
     var recRAMData;
     var recNetworkData;
+
+    var chart_start_index = -1;
+    var chart_end_index = -1;
+
     for (let i = 0; i < 200; i++) {
+       if (new Date(recCPUData.timestamp) >= start && chart_start_index < 0){
+         chart_start_index = i;
+       }
+
+       if(new Date(recCPUData.timestamp) <= end) {
+
+         chart_end_index = i;
+       } else {
+         break;
+       }
+
+    }
+   
+    let i = (chart_start_index+chart_end_index)/2;
+
+
       recCPUData = cpuData.history[i];
       recRAMData = ramData.history[i];
       recNetworkData = networkData.history[i];
@@ -583,7 +621,6 @@
         recNetworkData = networkData.history[i];
         break;
       }
-    }
     var recCPUDataValue = recCPUData.value;
     var recRAMDataValue = recRAMData.value;
     var recNetworkDataValue = recNetworkData.value;
