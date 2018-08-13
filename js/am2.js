@@ -3,6 +3,7 @@
 	var cCPUPostion = 0;
 	var cRAMPostion = 0;
 	var cPCloadPostion = 0;
+	var cNetworkPostion = 0;
   var cpuloadFactor = 1;
   var networkloadFactor = 1;
   var interval;
@@ -22,7 +23,7 @@
   var isThresholdForecast = false;
 
   var cpuUrl = './data/CPU_nn.json';
-  var pcLoadUrl = './data/CPU_nn.json';
+  var pcLoadUrl = './data/Load_nn.json';
   var ramUrl = './data/RAM_nn.json';
   var networkUrl = './data/Network_nn.json';
 
@@ -261,31 +262,33 @@
 			  if(!$( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).addClass('btn-danger');
 
-				if( networkChart && cCPUPostion == networkChart.dataProvider.length - 21) {
-					cCPUPostion = 0;
+				if( cNetworkPostion == networkChart.dataProvider.length - 21) {
+					cNetworkPostion = 0;
           updateChart(networkChart, networkDataUrl);
         }
 				else
-					cCPUPostion++;
+					cNetworkPostion++;
 
-				networkChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
+				networkChart.zoomToIndexes(cNetworkPostion, cNetworkPostion + 20);
 
-				if(pcloadChart && cRAMPostion == pcloadChart.dataProvider.length - 21) {
-					cRAMPostion = 0;
+				if( cPCloadPostion == pcloadChart.dataProvider.length - 21) {
+					cPCloadPostion = 0;
 
-        }
-				else
-					cRAMPostion++;
-
-				pcloadChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
-
-				if(cpuChart && cPCloadPostion == cpuChart.dataProvider.length - 21) {
-          cPCloadPostion = 0;
           updateChart(pcloadChart, pcloadDataUrl);
-
         }
 				else
 					cPCloadPostion++;
+
+				pcloadChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
+
+				if( cCPUPostion == cpuChart.dataProvider.length - 21) {
+          cCPUPostion = 0;
+          //updateChart(pcloadChart, pcloadDataUrl);
+          updateChart(cpuChart, cpuDataUrl);
+
+        }
+				else
+					cCPUPostion++;
 
 				cpuChart.zoomToIndexes(cPCloadPostion, cPCloadPostion + 20);
 			}else{

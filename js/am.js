@@ -454,9 +454,9 @@
       var recRAMDataValue = recRAMData.value;
       var recNetworkDataValue = recNetworkData.value;
 
-      var cpuHealth = (recCPUDataValue/cpuThreshold)*100;
-      var ramHealth = (recRAMDataValue/ramThreshold)*100;
-      var networkHealth = (recNetworkDataValue/networkThreshold)*100;
+      var cpuHealth = Math.floor((recCPUDataValue/cpuThreshold)*100);
+      var ramHealth = Math.floor((recRAMDataValue/ramThreshold)*100);
+      var networkHealth = Math.floor((recNetworkDataValue/networkThreshold)*100);
 
       console.log(recCPUData.recomendation)
 
@@ -466,49 +466,49 @@
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
-          html += '<td style="color:red">Critical - Low CPU Utilization</td>';
+          html += '<td style="color:red">Critical - ('+cpuHealth+'%) Low CPU Utilization</td>';
           html += '</tr>';
 
           // CPU  deprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Decrease Cores</td>';
+          html2 += '<td style="color:red">Critical - ('+cpuHealth+'%) Decrease Cores</td>';
           html2 += '</tr>';
         } else if (cpuHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - Low CPU Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+cpuHealth+'%) Low CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Decrease Cores</td>';
+          html2 += '<td style="color:blue">Warning - ('+cpuHealth+'%) Decrease Cores</td>';
           html2 += '</tr>';
         } else if (cpuHealth > high_warning && cpuHealth < high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - High CPU Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+cpuHealth+'%) High CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Increase Cores</td>';
+          html2 += '<td style="color:blue">Warning - ('+cpuHealth+'%) Increase Cores</td>';
           html2 += '</tr>';
         } else if (cpuHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:red">Critical - High CPU Utilization</td>';
+          html += '<td style="color:red">Critical - ('+cpuHealth+'%) High CPU Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Increase Cores</td>';
+          html2 += '<td style="color:red">Critical - ('+cpuHealth+'%) Increase Cores</td>';
           html2 += '</tr>';
         }
 
@@ -517,49 +517,49 @@
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
-          html += '<td style="color:red">Critical - Low RAM Utilization</td>';
+          html += '<td style="color:red">Critical - ('+ramHealth+'%) Low RAM Utilization</td>';
           html += '</tr>';
 
           // CPU  deprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Decrease RAM</td>';
+          html2 += '<td style="color:red">Critical - ('+ramHealth+'%) Decrease RAM</td>';
           html2 += '</tr>';
         } else if (ramHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - Low RAM Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+ramHealth+'%) Low RAM Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Decrease RAM</td>';
+          html2 += '<td style="color:blue">Warning - ('+ramHealth+'%) Decrease RAM</td>';
           html2 += '</tr>';
         } else if (ramHealth > high_warning && ramHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - High RAM Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+ramHealth+'%) High RAM Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Increase RAM</td>';
+          html2 += '<td style="color:blue">Warning - ('+ramHealth+'%) Increase RAM</td>';
           html2 += '</tr>';
         } else if (ramHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:red">Critical - High RAM Utilization</td>';
+          html += '<td style="color:red">Critical - ('+ramHealth+'%) High RAM Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Increase RAM</td>';
+          html2 += '<td style="color:red">Critical - ('+ramHealth+'%) Increase RAM</td>';
           html2 += '</tr>';
         }
 
@@ -567,49 +567,49 @@
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
-          html += '<td style="color:red">Critical - Low Network Bandwidth Utilization</td>';
+          html += '<td style="color:red">Critical - ('+networkHealth+'%) Low Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU  deprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Decrease Bandwidth Allocation</td>';
+          html2 += '<td style="color:red">Critical - ('+networkHealth+'%) Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
         } else if (networkHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - Low Network Bandwidth Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+networkHealth+'%) Low Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Decrease Bandwidth Allocation</td>';
+          html2 += '<td style="color:blue">Warning - ('+networkHealth+'%) Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
         } else if (networkHealth > high_warning && networkHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:blue">Warning - High Network Bandwidth Utilization</td>';
+          html += '<td style="color:blue">Warning - ('+networkHealth+'%) High Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:blue">Warning - Increase Bandwidth Allocation</td>';
+          html2 += '<td style="color:blue">Warning - ('+networkHealth+'%) Increase Bandwidth Allocation</td>';
           html2 += '</tr>';
         } else if (networkHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
-          html += '<td style="color:red">Critical - High Network Bandwidth Utilization</td>';
+          html += '<td style="color:red">Critical - ('+networkHealth+'%) High Network Bandwidth Utilization</td>';
           html += '</tr>';
 
           // CPU overprovision
           html2 += '<tr>';
           html2 += '<td>' + recCPUData.timestamp + '</td>';
-          html2 += '<td style="color:red">Critical - Increase Bandwidth Utilization</td>';
+          html2 += '<td style="color:red">Critical - ('+networkHealth+'%) Increase Bandwidth Utilization</td>';
           html2 += '</tr>';
         }
 
