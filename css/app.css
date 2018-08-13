@@ -13,6 +13,14 @@ canvas {
   height: 400px;
 }
 
+.table td, .table th {
+    padding: 0rem;
+}
+
+td {
+  font-size: 0.75rem;
+}
+
 .amcharts-main-div image{
   display: none !important;
 }

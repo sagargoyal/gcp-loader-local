@@ -44,7 +44,8 @@
     <section id="home" class="mt-2">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                  <h6>Load Simulation</h6>
                   <div style="border: 1px solid lightgrey;padding: 8px 5px 0px;">
                     <div class="clearfix" id="computer-load">
                         <div class="w-50 float-left">Compute Load</div>
@@ -65,7 +66,7 @@
                         </div>
                     </div>
                     <div class="clearfix" id="network-load">
-                        <div class="w-50 float-left">Network Utilization</div>
+                        <div class="w-50 float-left">Network Load</div>
                         <div class="input-group mb-3 w-50 float-right">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
@@ -102,7 +103,7 @@
                     </table>
 
                     <p class="mt-4">Trigger series</p>
-                    
+
                     <table class="table table-responsive table-bordered" id="triggers" style="height: 300px; overflow-y: scroll;">
                         <thead>
                             <tr>
@@ -120,7 +121,7 @@
 
                 </div>
 
-                
+
 
                 <div class="col-lg-8">
                     <div class="slider-container pb-3">
@@ -128,12 +129,12 @@
                         <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
 
                     </div>
-                    <h2 class="h6 mb-2">CPU Utilization</h2> 
+                    <h2 class="h6 mb-2">CPU Utilization</h2>
 					<div class="float-right">
                         <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
                         <button type="button" class="btn btn-danger" id="pause">Pause</button>
                     </div>
-					
+
                     <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
                         <canvas id="cpu-util-chart"></canvas>
                     </div>
