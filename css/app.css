@@ -14,12 +14,8 @@ canvas {
 }
 
 .table td, .table th {
-    padding: 0rem auto;
-}
-
-/* .table td, .table th {
     padding: 0rem;
-} */
+}
 
 td {
   font-size: 0.75rem;
