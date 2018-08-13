@@ -596,6 +596,7 @@
     var chart_end_index = -1;
 
     for (let i = 0; i < 200; i++) {
+       recCPUData = cpuData.history[i];
        if (new Date(recCPUData.timestamp) >= start && chart_start_index < 0){
          chart_start_index = i;
        }
@@ -612,15 +613,9 @@
     let i = (chart_start_index+chart_end_index)/2;
 
 
-      recCPUData = cpuData.history[i];
-      recRAMData = ramData.history[i];
-      recNetworkData = networkData.history[i];
-      if (new Date(recCPUData.timestamp) >= end ) {
-        recCPUData = cpuData.history[i];
-        recRAMData = ramData.history[i];
-        recNetworkData = networkData.history[i];
-        break;
-      }
+    recCPUData = cpuData.history[i];
+    recRAMData = ramData.history[i];
+    recNetworkData = networkData.history[i];
     var recCPUDataValue = recCPUData.value;
     var recRAMDataValue = recRAMData.value;
     var recNetworkDataValue = recNetworkData.value;
