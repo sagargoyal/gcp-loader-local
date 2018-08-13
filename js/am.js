@@ -80,8 +80,8 @@
       }
       //loadNewData('./data/CPU_boost_n.json', cpuChart);
       cpuloadFactor = value;
-      loadNewData('./data/CPU_n.json', cpuChart);
-      loadNewData('./data/RAM_n.json', ramChart);
+      loadNewData(cpuUrl, cpuChart);
+      loadNewData(ramUrl, ramChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
@@ -215,7 +215,7 @@
               newChartData.push({
                 date: new Date(smallData.timestamp),
                 forecast: smallData.value,
-                history: networkData.history[i].value
+                history: ramData.history[i].value
               });
               newHistoryData.push({timestamp:(smallData.timestamp),value:ramData.history[i].value});
               newForeCastData.push({timestamp:(smallData.timestamp),value:smallData.value});
@@ -288,6 +288,7 @@
       var load = x * (((0.2)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
       load = load/currentMachinesCount;
       //var load = x;
+      console.log("SAGAR CPU LOAD",load);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
