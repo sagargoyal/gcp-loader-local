@@ -15,12 +15,29 @@
   moveCharts();
   var serverLInk = "http://35.200.154.50:8000/";
   //var serverLInk = "http://localhost:8000/";
+
+//EDIT THIS
   var cpuThreshold = 100;
   var ramThreshold = 64;
   var networkThreshold = 100;
+
   var cpuReductionFactor = 1;
   var ramReductionFactor = 1;
+  var networkReductionFactor = 1;
+
   var isThresholdForecast = false;
+
+  var low_critical = 10;
+  var low_warning = 20;
+  var high_critical = 95;
+  var high_warning = 85;
+  var recommendation_increase = 85;
+  var recommendation_decrease = 20;
+
+  var cpuUrl = './data/CPU_nn.json';
+  var ramUrl = './data/RAM_nn.json';
+  var networkUrl = './data/Network_nn.json';
+
 
   var currentMachineType = "n1-standard-2";
   var currentMachinesCount = 1;
@@ -77,8 +94,8 @@
         $(this).attr('disabled', true);
       }
       cpuloadFactor = value;
-      loadNewData('./data/CPU_n.json', cpuChart);
-      loadNewData('./data/RAM_n.json', ramChart);
+      loadNewData(cpuUrl, cpuChart);
+      loadNewData(ramUrl, ramChart);
 
     }
 
@@ -100,7 +117,7 @@
       }
       networkloadFactor = value;
       //loadNewData('./data/Network_boost_n.json', networkChart);
-      loadNewData('./data/Network_n.json', networkChart);
+      loadNewData(networkUrl, networkChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
@@ -114,7 +131,7 @@
         $(this).attr('disabled', true);
       }
       networkloadFactor = value;
-      loadNewData('./data/Network_n.json', networkChart);
+      loadNewData(networkUrl, networkChart);
     }
 
   });
@@ -264,13 +281,13 @@
     })
   }
 
-  function cpuHistoryMultiplier(value){
+ function cpuHistoryMultiplier(value){
       // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
-      var x = value * 100;
+      var x = value/cpuReductionFactor;
       // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
-      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      var load = x * (((0.2)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
       //var load = x;
-      console.log("history value : " + value + " load :" + load);
       return load>cpuThreshold?cpuThreshold:load;
   }
 
@@ -284,24 +301,33 @@
       // }
 
       // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
-      var x = value * 100;
+      var x = value/cpuReductionFactor;
       var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
       // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
     //  var load = x;
     console.log("forecast value : " + value + " load :" + load);
-      // return load>cpuThreshold?cpuThreshold:load;
-      return load;
+      if(isThresholdForecast){
+        return load>cpuThreshold?cpuThreshold:load;
+      } else {
+        return load;
+      }
   }
 
   function ramHistoryMultiplier(value){
-      var x = ((cpuloadFactor *  (value/ramReductionFactor))/100)/currentMachinesCount;
-      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
+      var x = value/ramReductionFactor;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.2)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      //var load = x;
       return load>ramThreshold?ramThreshold:load;
   }
 
   function ramForecastMultiplier(value){
-      var x = ((cpuloadFactor *  (value/ramReductionFactor))/100)/currentMachinesCount;
-      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
+      var x = value/ramReductionFactor;
+      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      console.log("forecast value : " + value + " load :" + load);
       if(isThresholdForecast){
         return load>ramThreshold?ramThreshold:load;
       } else {
@@ -310,23 +336,25 @@
   }
 
   function networkHistoryMultiplier(value){
-      value = (value/1024)/1024;
-      var x = ((networkloadFactor *  value)/100)/currentMachinesCount;
-      var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100);
+      var x = value/networkReductionFactor;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.2)*Math.pow(networkloadFactor,2)) + (0.7*networkloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      //var load = x;
       return load>networkThreshold?networkThreshold:load;
 
   }
 
   function networkForecastMultiplier(value){
-      value = (value/1024)/1024;
-      var x =  ((networkloadFactor *  value)/100)/currentMachinesCount;
-      var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
+      var x = value/networkReductionFactor;
+      var load = x * (((0.25)*Math.pow(networkloadFactor,2)) + (0.7*networkloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      console.log("forecast value : " + value + " load :" + load);
       if(isThresholdForecast){
         return load>networkThreshold?networkThreshold:load;
       } else {
-        return load
+        return load;
       }
-
   }
 
   function updateChart(chart, url) {
@@ -393,10 +421,10 @@
           ramData.history = newHistoryData;
           ramData.forecast = newForecastData;
           ramData.recommended = recommended;
-        } else {
-          ramData.history = newHistoryData;
-          ramData.forecast = newForecastData;
-          ramData.recommended = recommended;
+        } else if (chart == networkChart) {
+          networkData.history = newHistoryData;
+          networkData.forecast = newForecastData;
+          networkData.recommended = recommended;
         }
         chart.dataProvider = chartData;
         chart.validateData();
@@ -433,7 +461,7 @@
 
       if (new Date(recCPUData.timestamp) >= start && new Date(recCPUData.timestamp) <= end ) {
         // console.log(recCPUData.recomendation)
-        if (cpuHealth < 20) {
+        if (cpuHealth < low_critical) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -445,7 +473,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth < 40) {
+        } else if (cpuHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -457,7 +485,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 75 && cpuHealth < 90) {
+        } else if (cpuHealth > high_warning && cpuHealth < high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -469,7 +497,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Cores</td>';
           html2 += '</tr>';
-        } else if (cpuHealth > 90) {
+        } else if (cpuHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -484,7 +512,7 @@
         }
 
 
-         if (ramHealth < 20) {
+         if (ramHealth < low_critical) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -496,7 +524,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth < 40) {
+        } else if (ramHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -508,7 +536,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 75 && ramHealth <90) {
+        } else if (ramHealth > high_warning && ramHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -520,7 +548,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase RAM</td>';
           html2 += '</tr>';
-        } else if (ramHealth > 90) {
+        } else if (ramHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -534,7 +562,7 @@
           html2 += '</tr>';
         }
 
-        if (networkHealth < 20) {
+        if (networkHealth < low_critical) {
           // CPU outage
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp +'</td>';
@@ -546,7 +574,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:red">Critical - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth < 40) {
+        } else if (networkHealth < low_warning) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -558,7 +586,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Decrease Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 75 && networkHealth <90) {
+        } else if (networkHealth > high_warning && networkHealth <high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -570,7 +598,7 @@
           html2 += '<td>' + recCPUData.timestamp + '</td>';
           html2 += '<td style="color:blue">Warning - Increase Bandwidth Allocation</td>';
           html2 += '</tr>';
-        } else if (networkHealth > 90) {
+        } else if (networkHealth > high_critical) {
           // CPU excess
           html += '<tr>';
           html += '<td>' + recCPUData.timestamp + '</td>';
@@ -647,10 +675,10 @@
 
   function getHealthStatus(value){
 
-    if(value > 75){
+    if(value > recommendation_increase){
 
       return "increase";
-    } else if (value < 30){
+    } else if (value < recommendation_decrease){
 
       return "decrease";
     } else {
@@ -718,13 +746,13 @@
   }
 
   // CPU ustilization chart
-  var cpuChart = createChart(_el('cpu-chart-container'), './data/CPU_n.json');
+  var cpuChart = createChart(_el('cpu-chart-container'), cpuUrl);
 
   // RAM Util chart
-  var ramChart = createChart(_el('ram-chart-container'), './data/RAM_n.json');
+  var ramChart = createChart(_el('ram-chart-container'), ramUrl);
 
   // Network load chart
-  var networkChart = createChart(_el('network-chart-container'), './data/Network_n.json');
+  var networkChart = createChart(_el('network-chart-container'), networkUrl);
 
   var theLoop;
   var cpuData = {};
@@ -862,14 +890,14 @@
             var historyValue =  history[i] ? history[i].value : '';
             var forecastValue =  forecast[i] ? forecast[i].value : '';
 
-            if (url === './data/CPU_n.json') {
+            if (url === cpuUrl) {
               if(historyValue){
                 historyValue = cpuHistoryMultiplier(historyValue);
               }
               if(forecastValue){
                 forecastValue = cpuForecastMultiplier(forecastValue);
               }
-            } else if (url === './data/Network_n.json') {
+            } else if (url === networkUrl) {
               if(historyValue){
                 historyValue = networkHistoryMultiplier(historyValue);
               }
@@ -877,7 +905,7 @@
                 forecastValue = networkForecastMultiplier(forecastValue);
               }
 
-            } else if (url === './data/RAM_n.json') {
+            } else if (url === ramUrl) {
               if(historyValue){
                 historyValue = ramHistoryMultiplier(historyValue);
               }
@@ -908,21 +936,21 @@
 
           chart.dataProvider = chartData;
 
-          if (url === './data/CPU_n.json') {
+          if (url === cpuUrl) {
             cpuChart = chart;
             cpuData.history = newHistoryData;
             cpuData.forecast = newForecastData;
             cpuData.recommended = recommended;
           }
 
-          if (url === './data/RAM_n.json') {
+          if (url === ramUrl) {
             ramChart = chart;
             ramData.history = newHistoryData;
             ramData.forecast = newForecastData;
             ramData.recommended = recommended;
           }
 
-          if (url === './data/Network_n.json') {
+          if (url === networkUrl) {
             networkChart = chart;
             networkData.history = newHistoryData;
             networkData.forecast = newForecastData;
@@ -1056,9 +1084,9 @@
     console.log("Sagar kk",type);
     //if(type.toUpperCase() == "RAM"){
       console.log("SAGAR calling ram",currentMachinesCount);
-      loadNewData('./data/RAM_n.json', ramChart);
-      loadNewData('./data/CPU_n.json', cpuChart);
-      loadNewData('./data/Network_n.json', networkChart);
+      loadNewData(ramUrl, ramChart);
+      loadNewData(cpuUrl, cpuChart);
+      loadNewData(networkUrl, networkChart);
     //} else if(type.toUpperCase() == "CPU"){
     //  console.log("SAGAR calling cpu",currentMachinesCount);
     //  loadNewData('./data/CPU_n.json', cpuChart);

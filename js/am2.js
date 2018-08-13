@@ -9,11 +9,25 @@
   var pcloadDataUrl = '';
   var networkDataUrl = '';
 
+
+//EDIT THIS
   var cpuThreshold = 100;
   var ramThreshold = 64;
   var networkThreshold = 100;
+
   var cpuReductionFactor = 1;
+  var ramReductionFactor = 1;
+  var networkReductionFactor = 1;
+
   var isThresholdForecast = false;
+
+  var cpuUrl = './data/CPU_nn.json';
+  var pcLoadUrl = './data/CPU_nn.json';
+  var ramUrl = './data/RAM_nn.json';
+  var networkUrl = './data/Network_nn.json';
+
+  var currentMachinesCount = 1;
+//
 
 
 	var playing = true;
@@ -45,7 +59,7 @@
       cpuloadFactor = value;
 
       //loadNewData('./data/PC_load_boost_n.json', pcloadChart);
-      loadNewData('./data/PC_load_n.json', pcloadChart);
+      loadNewData(pcLoadUrl, pcloadChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
@@ -58,7 +72,7 @@
       }
       cpuloadFactor = value;
 
-      loadNewData('./data/PC_load_n.json', pcloadChart);
+      loadNewData(pcLoadUrl, pcloadChart);
     }
 
   });
@@ -79,7 +93,7 @@
 
 
       //loadNewData('./data/Network_load_boost_n.json', networkChart);
-      loadNewData('./data/Network_load_n.json', networkChart);
+      loadNewData(networkUrl, networkChart);
 
     } else if ($this.hasClass('js-minus')) {
       console.log('minus');
@@ -94,11 +108,12 @@
       networkloadFactor = value;
 
 
-      loadNewData('./data/Network_load_n.json', networkChart);
+      loadNewData(networkUrl, networkChart);
     }
 
   });
   function updateChart(chart, url) {
+    console.log("SAGAR UPDATE ",url);
     $.ajax({
       url: url,
       dataType: 'json',
@@ -246,7 +261,7 @@
 			  if(!$( "#pause" ).hasClass('btn-danger'))
 				$( "#pause" ).addClass('btn-danger');
 
-				if(cCPUPostion == networkChart.dataProvider.length - 21) {
+				if( networkChart && cCPUPostion == networkChart.dataProvider.length - 21) {
 					cCPUPostion = 0;
           updateChart(networkChart, networkDataUrl);
         }
@@ -255,7 +270,7 @@
 
 				networkChart.zoomToIndexes(cCPUPostion, cCPUPostion + 20);
 
-				if(cRAMPostion == pcloadChart.dataProvider.length - 21) {
+				if(pcloadChart && cRAMPostion == pcloadChart.dataProvider.length - 21) {
 					cRAMPostion = 0;
 
         }
@@ -264,7 +279,7 @@
 
 				pcloadChart.zoomToIndexes(cRAMPostion, cRAMPostion + 20);
 
-				if(cPCloadPostion == cpuChart.dataProvider.length - 21) {
+				if(cpuChart && cPCloadPostion == cpuChart.dataProvider.length - 21) {
           cPCloadPostion = 0;
           updateChart(pcloadChart, pcloadDataUrl);
 
@@ -287,11 +302,11 @@
 
 
   // CPU ustilization chart
-  var networkChart = createChart(_el('android-chart-container'), './data/Network_load_n.json');
+  var networkChart = createChart(_el('android-chart-container'), networkUrl);
 
   // RAM Util chart
-  var pcloadChart = createChart(_el('ios-chart-container'), './data/PC_load_n.json');
-  var cpuChart = createChart(_el('pcload-chart-container'), './data/CPU_n.json');
+  var pcloadChart = createChart(_el('ios-chart-container'), pcLoadUrl);
+  var cpuChart = createChart(_el('pcload-chart-container'), cpuUrl);
 
   // Network load chart
   // var networkChart = createChart(_el('network-chart-container'), './data/Network_response.json');
@@ -327,10 +342,27 @@
           // we create date objects here. In your data, you can have date strings
           // and then set format of your dates using chart.dataDateFormat property,
           // however when possible, use date objects, as this will speed up chart rendering.
+          var historyValue =  history[i].value;
+console.log(url);
+            if (url === cpuUrl) {
+              if(historyValue){
+                historyValue = cpuHistoryMultiplier(historyValue);
+              }
+            } else if (url === ramUrl) {
+              if(historyValue){
+                historyValue = ramHistoryMultiplier(historyValue);
+              }
 
+            } else if (url === networkUrl) {
+              if(historyValue){
+                historyValue = networkHistoryMultiplier(historyValue);
+              }
+
+            }
           newChartData.push({
             date: history[i].timestamp,
-            history: history[i].value,
+            //history: history[i].value,
+            history: historyValue,
           });
         }
 
@@ -503,18 +535,26 @@
 
             var historyValue =  history[i].value;
 
-            if (url === './data/CPU_n.json') {
+            if (url === cpuUrl) {
               if(historyValue){
                 historyValue = cpuHistoryMultiplier(historyValue);
               }
-            } else if (url === './data/Network_load_n.json') {
+            } else 
+            if (url === networkUrl) {
               if(historyValue){
                 historyValue = networkHistoryMultiplier(historyValue);
               }
 
-            } else if (url === './data/PC_load_n.json') {
+            } else
+            if (url === pcLoadUrl) {
               if(historyValue){
                 historyValue = cpuHistoryMultiplier(historyValue);
+              }
+
+            } else
+            if (url === ramUrl) {
+              if(historyValue){
+                historyValue = ramHistoryMultiplier(historyValue);
               }
 
             }
@@ -534,23 +574,28 @@
 
           chart.dataProvider = chartData;
 
-		   if (url === './data/Network_load_n.json') {
+		   if (url === networkUrl) {
          networkChart = chart;
          networkData.history = history;
          networkData.forecast = forecast;
 
-			}
+			}else
 
-			if (url === './data/PC_load_n.json') {
+			if (url === pcLoadUrl) {
         pcloadChart = chart;
         pcloadData.history = history;
         pcloadData.forecast = forecast;
-			}
+			} else
 
-			if (url ===  './data/CPU_n.json') {
+			if (url ===  cpuUrl) {
         cpuChart = chart;
         cpuData.history = history;
         cpuData.forecast = forecast;
+      } else
+	if (url ===  ramUrl) {
+        ramChart = chart;
+        ramData.history = history;
+        ramData.forecast = forecast;
       }
 
       console.log(cpuData);
@@ -579,44 +624,81 @@
     return chart;
   }
 
-    function cpuHistoryMultiplier(value){
-      var x = (cpuloadFactor *  (value/cpuReductionFactor))/100;
-      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
-      console.log(load);
+ function cpuHistoryMultiplier(value){
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
+      var x = value/cpuReductionFactor;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.2)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      //var load = x;
       return load>cpuThreshold?cpuThreshold:load;
-    }
+  }
 
-    function cpuForecastMultiplier(value){
-      var x = (cpuloadFactor *  (value/cpuReductionFactor))/100;
-      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100
+  function cpuForecastMultiplier(value){
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor))/100)/currentMachinesCount;
+      // var load = ((((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100);
+      // if(isThresholdForecast){
+      //   return load>cpuThreshold?cpuThreshold:load;
+      // } else {
+      //   return load;
+      // }
+
+      // var x = ((cpuloadFactor *  (value/cpuReductionFactor)))/currentMachinesCount;
+      var x = value/cpuReductionFactor;
+      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+    //  var load = x;
+    console.log("forecast value : " + value + " load :" + load);
       if(isThresholdForecast){
         return load>cpuThreshold?cpuThreshold:load;
       } else {
         return load;
       }
-    }
+  }
 
-    function networkHistoryMultiplier(value){
-      value = (value/1024)/1024;
-      var x = (networkloadFactor *  value)/100;
-      var load = (((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2)*100;
+  function ramHistoryMultiplier(value){
+      var x = value/ramReductionFactor;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.2)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      //var load = x;
+      return load>ramThreshold?ramThreshold:load;
+  }
+
+  function ramForecastMultiplier(value){
+      var x = value/ramReductionFactor;
+      var load = x * (((0.25)*Math.pow(cpuloadFactor,2)) + (0.7*cpuloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      console.log("forecast value : " + value + " load :" + load);
+      if(isThresholdForecast){
+        return load>ramThreshold?ramThreshold:load;
+      } else {
+        return load;
+      }
+  }
+
+  function networkHistoryMultiplier(value){
+      var x = value/networkReductionFactor;
+      // var load = ((((0.2)*(Math.pow(x,2))) + (0.6*x) + 0.2));
+      var load = x * (((0.2)*Math.pow(networkloadFactor,2)) + (0.7*networkloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      //var load = x;
       return load>networkThreshold?networkThreshold:load;
 
-    }
+  }
 
-    function networkForecastMultiplier(value){
-      value = (value/1024)/1024;
-      var x =  (networkloadFactor *  value)/100;
-      var load = (((0.25)*(Math.pow(x,2))) + (0.7*x) + 0.15)*100;
+  function networkForecastMultiplier(value){
+      var x = value/networkReductionFactor;
+      var load = x * (((0.25)*Math.pow(networkloadFactor,2)) + (0.7*networkloadFactor) + 0.15);
+      load = load/currentMachinesCount;
+      console.log("forecast value : " + value + " load :" + load);
       if(isThresholdForecast){
         return load>networkThreshold?networkThreshold:load;
       } else {
         return load;
       }
-
-    }
-
-
+  }
 
 
   function _el(id) {
