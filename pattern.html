@@ -2,143 +2,149 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="css/app.css">
-  <title>Predecir</title>
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-    crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css">
+    <title>Predecir</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Predecir</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-      aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Predecir</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="./index.html">Provisioning Demo
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.html">Dynamic Provisioning
           </a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="./pattern.html">Load Pattern</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <section id="home" class="mt-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-3">
-          <h6>Load Simulation</h6>
-          <div style="border: 1px solid lightgrey;padding: 8px 5px 0px;">
-          <div class="clearfix" id="compute-load">
-            <div class="w-50 float-left">Application1 Load</div>
-            <div class="input-group mb-3 w-50 float-right">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
-                  <i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <div class="custom-file">
-                <input type="text" id="cpuLoad" class="form-control rounded-0" id="" value="1.0">
-              </div>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary btn-sm js-add" type="button">
-                  <i class="fa fa-plus"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="clearfix" id="network-load">
-            <div class="w-50 float-left">Application2 Load</div>
-            <div class="input-group mb-3 w-50 float-right">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
-                  <i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <div class="custom-file">
-                <input type="text" id="networkLoad" class="form-control rounded-0" id="" value="1.0">
-              </div>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary btn-sm js-add" type="button">
-
-                  <i class="fa fa-plus"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-         </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="./pattern.html">Load Pattern</a>
+                </li>
+            </ul>
         </div>
+    </nav>
 
-        <div class="col-lg-9">
-          <div class="slider-container pb-3">
+    <section id="home" class="mt-2">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h6>Load Simulation</h6>
+                    <div style="border: 1px solid lightgrey;padding: 8px 5px 0px;">
+                        <div class="clearfix" id="compute-load">
+                            <div class="w-50 float-left">Application1 Load</div>
+                            <div class="input-group mb-3 w-50 float-right">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
+                  <i class="fa fa-minus"></i>
+                </button>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="text" id="cpuLoad" class="form-control rounded-0" id="" value="1.0">
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-sm js-add" type="button">
+                  <i class="fa fa-plus"></i>
+                </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix" id="network-load">
+                            <div class="w-50 float-left">Application2 Load</div>
+                            <div class="input-group mb-3 w-50 float-right">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
+                  <i class="fa fa-minus"></i>
+                </button>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="text" id="networkLoad" class="form-control rounded-0" id="" value="1.0">
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-sm js-add" type="button">
 
-            <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
+                  <i class="fa fa-plus"></i>
+                </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-          </div>
+                <div class="col-lg-9">
+                    <div class="slider-container pb-3">
 
-          <h2 class="h6 mb-2">Network Load</h2>
-          <div class="float-right">
-            <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
-            <button type="button" class="btn btn-danger" id="pause">Pause</button>
-          </div>
+                        <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
 
-          <div class="android-load mb-5 chart-container" id="android-chart-container">
-          </div>
+                    </div>
 
-          <h2 class="h6 mb-2">Compute Load</h2>
-          <div class="iosload mb-5 chart-container" id="ios-chart-container">
-          </div>
-          <!-- <div class="network-load mb-3 chart-container" id="network-chart-container">
+                    <div class="float-left" id="cpu-chart" style="    margin-top: 20px;">Network Load</div>
+                    <div class="float-right">
+                        <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
+                        <button type="button" class="btn btn-danger" id="pause">Pause</button>
+                    </div>
+
+                    <div class="android-load mb-5 chart-container" id="android-chart-container">
+                    </div>
+                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        Network Utilization Range: 1GBps to 100GBps
+                    </div>
+                    <br>
+                    <hr>
+                    <br>
+                    <h2 class="h6 mb-2">Compute Load</h2>
+                    <div class="iosload mb-5 chart-container" id="ios-chart-container">
+                    </div>
+                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        Compute Utilization Range: 0% to 100%
+                    </div>
+                    <br>
+                    <hr>
+                    <br>
+                    <!-- <div class="network-load mb-3 chart-container" id="network-chart-container">
             <h2 class="h6 mb-2">Network load</h2>
           </div> -->
 
-          <div class="clearfix">
-            <div class="float-left">
-              <h2 class="h6 mb-2">Utilization</h2>
-            </div>
-            <div class="float-right">
-              <select class="custom-select js-chart-type">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <h2 class="h6 mb-2">Utilization</h2>
+                        </div>
+                        <div class="float-right">
+                            <select class="custom-select js-chart-type">
                 <option value="./data/CPU_nn.json" selected>CPU</option>
                 <option value="./data/RAM_nn.json">RAM</option>
                 <option value="./data/Network_nn.json">NETWORK</option>
               </select>
+                        </div>
+                    </div>
+                    <div class="iosload mb-5 chart-container" id="pcload-chart-container">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="iosload mb-5 chart-container" id="pcload-chart-container">
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
 
 
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-  <script src="libs/amcharts/amcharts.js"></script>
-  <script src="libs/amcharts/serial.js"></script>
-  <script src="libs/amcharts/plugins/dataloader/dataloader.min.js"></script>
-  <script src="js/am2.js"></script>
+    <script src="libs/amcharts/amcharts.js"></script>
+    <script src="libs/amcharts/serial.js"></script>
+    <script src="libs/amcharts/plugins/dataloader/dataloader.min.js"></script>
+    <script src="js/am2.js"></script>
 </body>
 
 </html>

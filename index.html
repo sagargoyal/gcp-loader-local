@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarLinks">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="./index.html">Provisioning Demo</a>
+                    <a class="nav-link" href="./index.html">Dynamic Provisioning</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./pattern.html">Load Pattern</a>
@@ -126,7 +126,9 @@
                         <!-- <input type="range" name="timeline" id="timeline-slider" class="custom-range" min="1" max="2000" step="1" value="1"> -->
 
                     </div>
-                    <h2 class="h6 mb-2">CPU Utilization</h2>
+                    <div class="float-left" id="cpu-chart" style="    margin-top: 20px;">
+                        CPU Utilization
+                    </div>
                     <div class="float-right">
                         <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
                         <button type="button" class="btn btn-danger" id="pause">Pause</button>
