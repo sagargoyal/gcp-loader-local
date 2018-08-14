@@ -471,11 +471,23 @@
             categoryAxis.minorGridEnabled = true;
             categoryAxis.axisColor = "#DADADA";
             categoryAxis.twoLineMode = true;
-
+            categoryAxis.title = "Timespan is 1 reading / hour ";
             // first value axis (on the left)
             var valueAxis1 = new AmCharts.ValueAxis();
             valueAxis1.axisColor = "#FF6600";
             valueAxis1.axisThickness = 2;
+
+            //Axis Labels
+            if (url === cpuUrl) {
+
+                //  valueAxis1.title = "";
+            } else if (url === ramUrl) {
+
+
+            } else if (url === networkUrl) {
+                valueAxis1.title = "Network Utilisation 0% to 100%";
+
+            }
             chart.addValueAxis(valueAxis1);
 
             // GRAPHS

@@ -186,7 +186,7 @@
                                 history: history[i] ? (cpuHistoryMultiplier(history[i].value)) : '',
                                 //forecast: forecast[i].value,
                                 forecast: (cpuForecastMultiplier(forecast[i].value)),
-                                actual_history: history[i]? history[i].value:'',
+                                actual_history: history[i] ? history[i].value : '',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (cpuHistoryMultiplier(history[i].value)) : '') });
@@ -229,7 +229,7 @@
                                 date: new Date(forecast[i].timestamp),
                                 history: history[i] ? (ramHistoryMultiplier(history[i].value)) : '',
                                 forecast: (ramForecastMultiplier(forecast[i].value)),
-                                actual_history: history[i]? history[i].value:'',
+                                actual_history: history[i] ? history[i].value : '',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (ramHistoryMultiplier(history[i].value)) : '') });
@@ -265,7 +265,7 @@
                                 date: new Date(forecast[i].timestamp),
                                 history: history[i] ? (networkHistoryMultiplier(history[i].value)) : '',
                                 forecast: (networkForecastMultiplier(forecast[i].value)),
-                                actual_history: history[i]? history[i].value:'',
+                                actual_history: history[i] ? history[i].value : '',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (networkHistoryMultiplier(history[i].value)) : '') });
@@ -418,7 +418,7 @@
                         //history: history[i] ? history[i].value : '',
                         history: history[i] ? historyValue : '',
                         forecast: forecastValue,
-                        actual_history: history[i]?history[i].value:'',
+                        actual_history: history[i] ? history[i].value : '',
                         //forecast: forecast[i].value,
                         // recommended: forecast[i].value
                     });
@@ -804,11 +804,23 @@
             categoryAxis.minorGridEnabled = true;
             categoryAxis.axisColor = "#DADADA";
             categoryAxis.twoLineMode = true;
+            categoryAxis.title = "Timespan is 1 reading / hour ";
 
             // first value axis (on the left)
             var valueAxis1 = new AmCharts.ValueAxis();
             valueAxis1.axisColor = "#FF6600";
             valueAxis1.axisThickness = 2;
+            //Axis Labels
+            if (url === cpuUrl) {
+
+                //  valueAxis1.title = "";
+            } else if (url === ramUrl) {
+
+
+            } else if (url === networkUrl) {
+                valueAxis1.title = "Network Utilisation 0% to 100%";
+
+            }
             chart.addValueAxis(valueAxis1);
 
             // second value axis (on the right)
@@ -946,7 +958,7 @@
                             //history: history[i] ? history[i].value : '',
                             history: history[i] ? historyValue : '',
                             forecast: forecastValue,
-                            actual_history: history[i]?history[i].value:'',
+                            actual_history: history[i] ? history[i].value : '',
                             //forecast: forecast[i].value,
                             // recommended: forecast[i].value
                         });
