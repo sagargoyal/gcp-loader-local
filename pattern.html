@@ -92,19 +92,35 @@
                         <button type="button" class="btn btn-danger" id="pause">Pause</button>
                     </div>
 
+                    <div style="position: relative;">
+                      <div class='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 48%; width: 100%;">
+                          Network bandwidth - 1Gbps to 100Gbps
+                    </div>
+
                     <div class="android-load mb-5 chart-container" id="android-chart-container">
                     </div>
                     <div style="position: relative; margin-top: -60px; font-size: 12px;">
-                        Network Utilization Range: 1GBps to 100GBps
+                        Timescale Per Hour Basis
+                      </div>
+                    <!-- <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        Network Utilization Range: 1GBps to 100GBps -->
                     </div>
                     <br>
                     <hr>
                     <br>
                     <h2 class="h6 mb-2">Compute Load</h2>
+
+                    <div style="position: relative;">
+                      <div class='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 48%; width: 100%;">
+                          Compute Load - 1% to 100%
+                      </div>
                     <div class="iosload mb-5 chart-container" id="ios-chart-container">
                     </div>
                     <div style="position: relative; margin-top: -60px; font-size: 12px;">
-                        Compute Utilization Range: 0% to 100%
+                        Timescale Per Hour Basis
+                      </div>
+                    <!-- <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        Compute Utilization Range: 0% to 100% -->
                     </div>
                     <br>
                     <hr>
@@ -119,13 +135,21 @@
                         </div>
                         <div class="float-right">
                             <select class="custom-select js-chart-type">
-                <option value="./data/CPU_nn.json" selected>CPU</option>
-                <option value="./data/RAM_nn.json">RAM</option>
-                <option value="./data/Network_nn.json">NETWORK</option>
+                <option class='customSelectMenu' value="./data/CPU_nn.json" selected>CPU</option>
+                <option class='customSelectMenu' value="./data/RAM_nn.json">RAM</option>
+                <option class='customSelectMenu' value="./data/Network_nn.json">NETWORK</option>
               </select>
                         </div>
                     </div>
+                    <div style="position: relative;">
+                      <div id='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 48%; width: 100%;">
+                          percentage utilization 0% to 100%
+                      </div>
                     <div class="iosload mb-5 chart-container" id="pcload-chart-container">
+                    </div>
+                  </div>
+                  <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                      Timescale Per Hour Basis
                     </div>
                 </div>
             </div>

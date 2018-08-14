@@ -1,5 +1,22 @@
 (function($) {
 
+  // for change of y-axis text
+// console.log('select value: ' + $('.customSelectMenu').attr('value'));
+//
+// $('.customSelectMenu').click(function(){
+//   if($('.customSelectMenu').attr('value') == './data/CPU_nn.json') {
+//     $('#vertText').html('percentage utilization 0% to 100%');
+//   }
+//   else if($('.customSelectMenu').attr('value') == './data/RAM_nn.json') {
+//     $('#vertText').html('Gbs memory 1Gb to 64Gb');
+//   }
+//   else if($('.customSelectMenu').attr('value') == './data/Network_nn.json') {
+//     $('#vertText').html('Gbps 1Gbps to 100Gbps');
+//   }
+// });
+
+//
+
     var cCPUPostion = 0;
     var cRAMPostion = 0;
     var cPCloadPostion = 0;

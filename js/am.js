@@ -31,7 +31,7 @@
     var low_warning = 20;
     var high_critical = 95;
     var high_warning = 85;
-    var recommendation_increase = 85;
+    var recommendation_increase = 75;
     var recommendation_decrease = 20;
 
     var cpuUrl = './data/CPU_nn.json';
