@@ -134,17 +134,14 @@
                         <button type="button" class="btn btn-danger" id="pause">Pause</button>
                     </div>
 
-                    <div style="position: relative;">
-                      <div class='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 48%; width: 100%;">
-                          Percentage Utilization 0% to 100%
-                      </div>
-                      <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
-                          <canvas id="cpu-util-chart"></canvas>
-                      </div>
+
+                    <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
+                        <canvas id="cpu-util-chart"></canvas>
                     </div>
-                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+
+                    <!-- <div style="position: relative; margin-top: -60px; font-size: 12px;">
                         Timescale Per Hour Basis
-                      </div>
+                      </div> -->
 
                     <div class="float-left" id="cpu-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
@@ -161,18 +158,12 @@
                     <br>
                     <h2 class="h6 mb-2">RAM Utilization</h2>
 
-                    <div style="position: relative;">
-                      <div class='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 48%; width: 100%;">
-                        Memory - 1Gb to 64Gb
-                    </div>
+
                     <div class="ram-utilization mb-5 chart-container" id="ram-chart-container">
                         <!-- <canvas id="ram-util-chart"></canvas> -->
                     </div>
 
-                  </div>
-                  <div style="position: relative; margin-top: -60px; font-size: 12px;">
-                      Timescale Per Hour Basis
-                    </div>
+
                     <div class="float-left" id="ram-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
                         <span>Recommended Configuration : <span class="recommended-config">n2</span></span>
@@ -188,18 +179,12 @@
                     <br>
                     <h2 class="h6 mb-2">Network Utilization</h2>
 
-                    <div style="position: relative;">
-                      <div class='vertText' style="text-align: center; transform: rotate(-90deg); position: absolute; right: 51%; font-size: 12px; top: 34%; width: 100%;">
-                        Network bandwidth - 1Gbps to 100Gbps
-                    </div>
+
                     <div class="network-load mb-3 chart-container" id="network-chart-container">
                         <!-- <canvas id="network-load-chart"></canvas> -->
                     </div>
                     <br>
-                    </div>
-                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
-                        Timescale Per Hour Basis
-                      </div>
+
                     <div class="float-left" id="network-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
                         <span>Recommended Configuration : <span class="recommended-config">n2</span></span>

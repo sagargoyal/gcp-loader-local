@@ -505,6 +505,8 @@
             } else if (url === networkUrl) {
                 valueAxis1.title = "Network Bandwidth - 0% to 100%";
 
+            } else {
+                valueAxis1.title = "Compute Load Utilisation - 0% to 100%";
             }
             chart.addValueAxis(valueAxis1);
 
