@@ -7,19 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css">
     <title>Predecir</title>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-        crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Predecir</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -45,44 +42,44 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3">
-                  <h6>Load Simulation</h6>
-                  <div style="border: 1px solid lightgrey;padding: 8px 5px 0px;">
-                    <div class="clearfix" id="computer-load">
-                        <div class="w-50 float-left">Compute Load</div>
-                        <div class="input-group mb-3 w-50 float-right">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
+                    <h6>Load Simulation</h6>
+                    <div style="border: 1px solid lightgrey;padding: 8px 5px 0px;">
+                        <div class="clearfix" id="computer-load">
+                            <div class="w-50 float-left">Compute Load</div>
+                            <div class="input-group mb-3 w-50 float-right">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
                                     <i class="fa fa-minus"></i>
                                 </button>
-                            </div>
-                            <div class="custom-file">
-                                <input type="text" id="cpuLoad" class="form-control rounded-0" value="1.0">
-                            </div>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm js-add" type="button">
+                                </div>
+                                <div class="custom-file">
+                                    <input type="text" id="cpuLoad" class="form-control rounded-0" value="1.0">
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-sm js-add" type="button">
                                     <i class="fa fa-plus"></i>
                                 </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="clearfix" id="network-load">
-                        <div class="w-50 float-left">Network Load</div>
-                        <div class="input-group mb-3 w-50 float-right">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
+                        <div class="clearfix" id="network-load">
+                            <div class="w-50 float-left">Network Load</div>
+                            <div class="input-group mb-3 w-50 float-right">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-sm js-minus" type="button" disabled="disabled">
                                     <i class="fa fa-minus"></i>
                                 </button>
-                            </div>
-                            <div class="custom-file">
-                                <input type="text" id="networkLoad" class="form-control rounded-0" id="" value="1.0">
-                            </div>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm js-add" type="button">
+                                </div>
+                                <div class="custom-file">
+                                    <input type="text" id="networkLoad" class="form-control rounded-0" id="" value="1.0">
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-sm js-add" type="button">
                                     <i class="fa fa-plus"></i>
                                 </button>
+                                </div>
                             </div>
                         </div>
-                      </div>
                     </div>
 
                     <p class="mt-4">Events series</p>
@@ -94,7 +91,7 @@
                                 <th scope="col">Events log</th>
                             </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -130,18 +127,23 @@
 
                     </div>
                     <h2 class="h6 mb-2">CPU Utilization</h2>
-					<div class="float-right">
+                    <div class="float-right">
                         <button id="play" type="button" class="btn btn-success">Play</button> &nbsp;
                         <button type="button" class="btn btn-danger" id="pause">Pause</button>
                     </div>
 
                     <div class="cpu-utilization mb-5 chart-container" id="cpu-chart-container">
                         <canvas id="cpu-util-chart"></canvas>
+
+                    </div>
+                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        CPU Utilization Range 0% to 100%
                     </div>
                     <div class="float-left" id="cpu-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
                         <span>Recommended Configuration : <span class="recommended-config">n2</span></span>
                     </div>
+                    <br>
                     <div class="float-right">
                         <button id="cpu-apply-recommendation" type="button" class="btn btn-secondary apply-button">Apply Recommendation</button> &nbsp;
                         <button type="button" class="btn btn-secondary btn-outline-dark reset-button" id="reset1">Reset</button>
@@ -154,10 +156,14 @@
                     <div class="ram-utilization mb-5 chart-container" id="ram-chart-container">
                         <!-- <canvas id="ram-util-chart"></canvas> -->
                     </div>
+                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        RAM Utilization Range 1GB to 64GB
+                    </div>
                     <div class="float-left" id="ram-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
                         <span>Recommended Configuration : <span class="recommended-config">n2</span></span>
                     </div>
+                    <br>
                     <div class="float-right">
                         <button id="ram-apply-recommendation" type="button" class="btn btn-secondary my-2 apply-button">Apply Recommendation</button> &nbsp;
                         <button type="button" class="btn btn-secondary btn-outline-dark reset-button" id="reset2">Reset</button>
@@ -170,10 +176,16 @@
                     <div class="network-load mb-3 chart-container" id="network-chart-container">
                         <!-- <canvas id="network-load-chart"></canvas> -->
                     </div>
+                    <br>
+                    <br>
+                    <div style="position: relative; margin-top: -60px; font-size: 12px;">
+                        Network Utilization Range 1GBps to 100GBps
+                    </div>
                     <div class="float-left" id="network-chart">
                         <span>Present Configuration : <span class="present-config">n1</span></span>&nbsp;|&nbsp;
                         <span>Recommended Configuration : <span class="recommended-config">n2</span></span>
                     </div>
+                    <br>
                     <div class="float-right">
                         <button id="network-apply-recommendation" type="button" class="btn btn-secondary my-2 apply-button">Apply Recommendation</button> &nbsp;
                         <button type="button" class="btn btn-secondary btn-outline-dark reset-button" id="reset3">Reset</button>
@@ -191,10 +203,8 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="libs/amcharts/amcharts.js"></script>
     <script src="libs/amcharts/serial.js"></script>
     <script src="libs/amcharts/plugins/dataloader/dataloader.min.js"></script>
