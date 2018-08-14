@@ -823,7 +823,7 @@
             // first graph
             var graph1 = new AmCharts.AmGraph();
             graph1.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-            graph1.title = "Data";
+            graph1.title = "Simulated Data";
             graph1.valueField = "history";
             graph1.bullet = "round";
             graph1.hideBulletsCount = 24;
@@ -842,8 +842,8 @@
 
             var graph3 = new AmCharts.AmGraph();
             graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
-            graph3.title = "Raw";
-            graph3.lineColor = "#D3D3D3";
+            graph3.title = "Historical Data";
+            graph3.lineColor = "#535353";
             graph3.valueField = "actual_history";
             graph3.bullet = "square";
             graph3.hideBulletsCount = 24;
