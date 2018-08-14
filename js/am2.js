@@ -1,25 +1,22 @@
 (function($) {
 
-  // for change of y-axis text
+    // for change of y-axis text
 
-$('#selectMenu').change(function(){
-  console.log('select value is : ' + $('.customSelectMenu').attr('value'));
-  console.log('changed');
+    $('#selectMenu').change(function() {
+        console.log('select value is : ' + $('.customSelectMenu').attr('value'));
+        console.log('changed');
 
-      if($('#opt1').is(':selected')) {
-        console.log('entered if');
-        $('#vertText').text('Percentage Utilization 0% to 100%');
-      }
+        if ($('#opt1').is(':selected')) {
+            console.log('entered if');
+            $('#vertText').text('Percentage Utilization 0% to 100%');
+        } else if ($('#opt2').is(':selected')) {
+            $('#vertText').text('Memory - 1Gb to 64Gb');
+        } else if ($('#opt3').is(':selected')) {
+            $('#vertText').text('Network bandwidth - 1Gbps to 100Gbps');
+        }
+    });
 
-  else if($('#opt2').is(':selected')) {
-    $('#vertText').text('Memory - 1Gb to 64Gb');
-  }
-  else if($('#opt3').is(':selected')) {
-    $('#vertText').text('Network bandwidth - 1Gbps to 100Gbps');
-  }
-});
-
-//
+    //
 
     var cCPUPostion = 0;
     var cRAMPostion = 0;
@@ -492,7 +489,7 @@ $('#selectMenu').change(function(){
             categoryAxis.minorGridEnabled = true;
             categoryAxis.axisColor = "#DADADA";
             categoryAxis.twoLineMode = true;
-            categoryAxis.title = "Timespan is 1 reading / hour ";
+            categoryAxis.title = "Time Scale - per hour";
             // first value axis (on the left)
             var valueAxis1 = new AmCharts.ValueAxis();
             valueAxis1.axisColor = "#FF6600";
@@ -501,12 +498,12 @@ $('#selectMenu').change(function(){
             //Axis Labels
             if (url === cpuUrl) {
 
-                //  valueAxis1.title = "";
+                valueAxis1.title = "Compute Load Utilisation - 0% to 100% ";
             } else if (url === ramUrl) {
-
+                valueAxis1.title = "Memory - 1GB to 64GB";
 
             } else if (url === networkUrl) {
-                valueAxis1.title = "Network Utilisation 0% to 100%";
+                valueAxis1.title = "Network Bandwidth - 0% to 100%";
 
             }
             chart.addValueAxis(valueAxis1);
