@@ -174,7 +174,8 @@
                             newChartData.push({
                                 date: new Date(smallData.timestamp),
                                 forecast: smallData.value,
-                                history: cpuData.history[i].value
+                                history: cpuData.history[i].value,
+                                actual_history: cpuData.actual_history[i].value
                             });
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: cpuData.history[i].value });
                             newForeCastData.push({ timestamp: (smallData.timestamp), value: smallData.value });
@@ -185,6 +186,7 @@
                                 history: history[i] ? (cpuHistoryMultiplier(history[i].value)) : '',
                                 //forecast: forecast[i].value,
                                 forecast: (cpuForecastMultiplier(forecast[i].value)),
+                                actual_history: history[i]? history[i].value:'',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (cpuHistoryMultiplier(history[i].value)) : '') });
@@ -196,6 +198,7 @@
                     cpuData = [];
                     cpuDataUrl = url;
                     cpuData.history = newHistoryData;
+                    cpuData.actual_history = history;
                     cpuData.forecast = newForeCastData;
                     cpuData.recommended = recommended;
                 }
@@ -216,7 +219,8 @@
                             newChartData.push({
                                 date: new Date(smallData.timestamp),
                                 forecast: smallData.value,
-                                history: ramData.history[i].value
+                                history: ramData.history[i].value,
+                                actual_history: ramData.actual_history[i].value
                             });
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: ramData.history[i].value });
                             newForeCastData.push({ timestamp: (smallData.timestamp), value: smallData.value });
@@ -225,6 +229,7 @@
                                 date: new Date(forecast[i].timestamp),
                                 history: history[i] ? (ramHistoryMultiplier(history[i].value)) : '',
                                 forecast: (ramForecastMultiplier(forecast[i].value)),
+                                actual_history: history[i]? history[i].value:'',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (ramHistoryMultiplier(history[i].value)) : '') });
@@ -234,6 +239,7 @@
                     }
                     ramData = [];
                     ramData.history = newHistoryData;
+                    ramData.actual_history = history;
                     ramData.forecast = newForeCastData;
                     ramData.recommended = recommended;
                     ramDataUrl = url;
@@ -249,7 +255,8 @@
                             newChartData.push({
                                 date: new Date(smallData.timestamp),
                                 forecast: smallData.value,
-                                history: networkData.history[i].value
+                                history: networkData.history[i].value,
+                                actual_history: networkData.actual_history[i].value
                             });
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: networkData.history[i].value });
                             newForeCastData.push({ timestamp: (smallData.timestamp), value: smallData.value });
@@ -258,6 +265,7 @@
                                 date: new Date(forecast[i].timestamp),
                                 history: history[i] ? (networkHistoryMultiplier(history[i].value)) : '',
                                 forecast: (networkForecastMultiplier(forecast[i].value)),
+                                actual_history: history[i]? history[i].value:'',
                             });
 
                             newHistoryData.push({ timestamp: (smallData.timestamp), value: (history[i] ? (networkHistoryMultiplier(history[i].value)) : '') });
@@ -267,6 +275,7 @@
                     }
                     networkData = [];
                     networkData.history = newHistoryData;
+                    networkData.actual_history = history;
                     networkData.forecast = newForeCastData;
                     networkData.recommended = recommended;
                     networkDataUrl = url;
@@ -409,6 +418,7 @@
                         //history: history[i] ? history[i].value : '',
                         history: history[i] ? historyValue : '',
                         forecast: forecastValue,
+                        actual_history: history[i]?history[i].value:'',
                         //forecast: forecast[i].value,
                         // recommended: forecast[i].value
                     });
@@ -418,14 +428,17 @@
                 if (chart == cpuChart) {
                     cpuData.history = newHistoryData;
                     cpuData.forecast = newForecastData;
+                    cpuData.actual_history = history;
                     cpuData.recommended = recommended;
                 } else if (chart == ramChart) {
                     ramData.history = newHistoryData;
                     ramData.forecast = newForecastData;
+                    ramData.actual_history = history;
                     ramData.recommended = recommended;
                 } else if (chart == networkChart) {
                     networkData.history = newHistoryData;
                     networkData.forecast = newForecastData;
+                    networkData.actual_history = history;
                     networkData.recommended = recommended;
                 }
                 chart.dataProvider = chartData;
@@ -827,6 +840,16 @@
             graph2.bulletBorderThickness = 1;
             chart.addGraph(graph2);
 
+            var graph3 = new AmCharts.AmGraph();
+            graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
+            graph3.title = "Raw";
+            graph3.lineColor = "#D3D3D3";
+            graph3.valueField = "actual_history";
+            graph3.bullet = "square";
+            graph3.hideBulletsCount = 24;
+            graph3.bulletBorderThickness = 1;
+            chart.addGraph(graph3);
+
             // third graph
             //   var graph3 = new AmCharts.AmGraph();
             //   graph3.valueAxis = valueAxis1; // we have to indicate which value axis should be used
@@ -923,6 +946,7 @@
                             //history: history[i] ? history[i].value : '',
                             history: history[i] ? historyValue : '',
                             forecast: forecastValue,
+                            actual_history: history[i]?history[i].value:'',
                             //forecast: forecast[i].value,
                             // recommended: forecast[i].value
                         });
@@ -941,6 +965,7 @@
                     if (url === cpuUrl) {
                         cpuChart = chart;
                         cpuData.history = newHistoryData;
+                        cpuData.actual_history = history;
                         cpuData.forecast = newForecastData;
                         cpuData.recommended = recommended;
                     }
@@ -948,6 +973,7 @@
                     if (url === ramUrl) {
                         ramChart = chart;
                         ramData.history = newHistoryData;
+                        ramData.actual_history = history;
                         ramData.forecast = newForecastData;
                         ramData.recommended = recommended;
                     }
@@ -955,6 +981,7 @@
                     if (url === networkUrl) {
                         networkChart = chart;
                         networkData.history = newHistoryData;
+                        networkData.actual_history = history;
                         networkData.forecast = newForecastData;
                         networkData.recommended = recommended;
                     }
