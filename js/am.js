@@ -40,9 +40,10 @@
 
 
     var currentMachineType = "n1-standard-2";
-    var currentMachinesCount = 1;
+    var default_machine_count = 1;
+    var currentMachinesCount = default_machine_count;
     var machineNames = [];
-    (function() {
+    /*(function() {
         console.log('calling list');
         $.ajax({
             method: 'POST',
@@ -58,7 +59,9 @@
                 console.log("error : ", err);
             }
         })
-    }());
+    }());*/
+    currentMachinesCount = default_machine_count;
+    showPresentConfig();
 
     function showPresentConfig() {
         $('#cpu-chart .present-config').text(currentMachineType + ' x ' + currentMachinesCount);
@@ -1048,7 +1051,7 @@
             alert('Machine is already in healthy state.');
         } else if (machinesRequested < currentMachinesCount) {
             // delete machinesRequested
-            for (let i = 0; i < machinesRequested; i++) {
+            /*for (let i = 0; i < (currentMachinesCount - machinesRequested); i++) {
                 $.ajax({
                     method: 'POST',
                     url: serverLInk + 'delete',
@@ -1067,9 +1070,12 @@
                         //responseFromHeroku(type);
                     }
                 })
-            }
+            }*/
+            currentMachinesCount = machinesRequested;
+            responseFromHeroku(type);
+ 
         } else {
-            for (let i = 0; i < currentMachinesCount; i++) {
+            /*for (let i = 0; i < (machinesRequested - currentMachinesCount); i++) {
                 $.ajax({
                     method: 'POST',
                     url: serverLInk + 'add',
@@ -1089,13 +1095,15 @@
                         //responseFromHeroku(type);
                     }
                 })
-            }
+            }*/
+            currentMachinesCount = machinesRequested;
+            responseFromHeroku(type);
             //add currentMachinesCount;
         }
     });
 
     $('.reset-button').click(function() {
-        const machinesToDelete = machineNames.splice(1, machineNames.length - 1);
+        /*const machinesToDelete = machineNames.splice(1, machineNames.length - 1);
         for (let i = 0; i < machinesToDelete.length; i++) {
             $.ajax({
                 method: 'POST',
@@ -1115,7 +1123,9 @@
                     //responseFromHeroku(type);
                 }
             })
-        }
+        }*/
+        currentMachinesCount = default_machine_count;
+        responseFromHeroku('cpu');
     });
 
     function responseFromHeroku(type) {
